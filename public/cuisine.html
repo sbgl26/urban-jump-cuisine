@@ -5,23 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cuisine - Urban Jump</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}html,body{height:100%;overflow:hidden}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#000;color:#fff;height:100vh;padding:15px 20px;display:flex;flex-direction:column}.header{display:flex;justify-content:space-between;align-items:center;padding:8px 0 15px;border-bottom:1px solid #222;margin-bottom:15px;flex-shrink:0}.clock{font-size:48px;font-weight:700;font-variant-numeric:tabular-nums}.info{font-size:18px;color:#555}.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:10px;flex:1;min-height:0}.card{background:#111;border:1px solid #222;display:flex;flex-direction:column;overflow:hidden}.card-header{background:#1a1a1a;padding:12px 10px;border-bottom:1px solid #222;flex-shrink:0}.card-time{font-size:42px;font-weight:800;line-height:1;margin-bottom:6px}.card-name{font-size:14px;font-weight:600;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card-info{font-size:12px;color:#666;margin-top:2px}.card-formule{font-size:10px;color:#444;text-transform:uppercase;margin-top:3px}.card-body{flex:1;overflow-y:auto;display:flex;flex-direction:column}.row{display:flex;align-items:center;justify-content:space-between;padding:10px 10px;border-bottom:1px solid #1a1a1a;cursor:pointer;transition:background .15s;flex-shrink:0}.row:hover{background:#1a1a1a}.row-label{font-size:12px;font-weight:600;color:#888;text-transform:uppercase}.row-value{font-size:16px;font-weight:700}.row-check{width:20px;height:20px;border:2px solid #333;font-size:12px;display:flex;align-items:center;justify-content:center;color:transparent;flex-shrink:0;margin-left:8px}.row.done{background:#0a2a0a!important;animation:none!important}.row.done .row-check{border-color:#2a5a2a;background:#1a4a1a;color:#4a4}.row.done .row-label{color:#4a4}.row.done .row-value{color:#6c6}@keyframes blink{0%,100%{background:#111}50%{background:#3a2500}}.row.alert{animation:blink .7s ease-in-out infinite}.row.alert .row-label{color:#fa0!important}.row.alert .row-value{color:#fc0!important}.btn-done{margin:8px;padding:10px;background:#222;border:1px solid #333;color:#666;font-size:12px;font-weight:600;cursor:pointer;text-transform:uppercase;flex-shrink:0}.btn-done:hover{background:#333;color:#fff}.no-data{grid-column:1/-1;display:flex;align-items:center;justify-content:center;color:#333;font-size:28px}.row-option{background:#1a1a0a;border-left:3px solid #aa0}.row-option .row-label{color:#aa0}.row-option .row-value{color:#cc0;font-size:13px;font-weight:500}.row-option.done{background:#0a2a0a;border-left-color:#2a5a2a}.row-option.done .row-label{color:#4a4}.row-option.done .row-value{color:#6c6}
+        *{margin:0;padding:0;box-sizing:border-box}html,body{height:100%;overflow:hidden}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#000;color:#fff;height:100vh;padding:15px 20px;display:flex;flex-direction:column}.header{display:flex;justify-content:space-between;align-items:center;padding:8px 0 15px;border-bottom:1px solid #222;margin-bottom:15px;flex-shrink:0}.clock{font-size:48px;font-weight:700;font-variant-numeric:tabular-nums}.info{font-size:18px;color:#555}.parc-name{font-size:14px;color:#444;text-transform:uppercase}.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:10px;flex:1;min-height:0}.card{background:#111;border:1px solid #222;display:flex;flex-direction:column;overflow:hidden}.card-header{background:#1a1a1a;padding:12px 10px;border-bottom:1px solid #222;flex-shrink:0}.card-time{font-size:42px;font-weight:800;line-height:1;margin-bottom:6px}.card-name{font-size:14px;font-weight:600;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card-info{font-size:12px;color:#666;margin-top:2px}.card-formule{font-size:10px;color:#444;text-transform:uppercase;margin-top:3px}.card-body{flex:1;overflow-y:auto;display:flex;flex-direction:column}.row{display:flex;align-items:center;justify-content:space-between;padding:10px 10px;border-bottom:1px solid #1a1a1a;cursor:pointer;transition:background .15s;flex-shrink:0}.row:hover{background:#1a1a1a}.row-label{font-size:12px;font-weight:600;color:#888;text-transform:uppercase}.row-value{font-size:16px;font-weight:700}.row-check{width:20px;height:20px;border:2px solid #333;font-size:12px;display:flex;align-items:center;justify-content:center;color:transparent;flex-shrink:0;margin-left:8px}.row.done{background:#0a2a0a!important;animation:none!important}.row.done .row-check{border-color:#2a5a2a;background:#1a4a1a;color:#4a4}.row.done .row-label{color:#4a4}.row.done .row-value{color:#6c6}@keyframes blink{0%,100%{background:#111}50%{background:#3a2500}}.row.alert{animation:blink .7s ease-in-out infinite}.row.alert .row-label{color:#fa0!important}.row.alert .row-value{color:#fc0!important}.btn-done{margin:8px;padding:10px;background:#222;border:1px solid #333;color:#666;font-size:12px;font-weight:600;cursor:pointer;text-transform:uppercase;flex-shrink:0}.btn-done:hover{background:#333;color:#fff}.no-data{grid-column:1/-1;display:flex;align-items:center;justify-content:center;color:#333;font-size:28px}.row-option{background:#1a1a0a;border-left:3px solid #aa0}.row-option .row-label{color:#aa0}.row-option .row-value{color:#cc0;font-size:13px;font-weight:500}.row-option.done{background:#0a2a0a;border-left-color:#2a5a2a}.row-option.done .row-label{color:#4a4}.row-option.done .row-value{color:#6c6}
     </style>
 </head>
 <body>
     <div class="header">
-        <div class="clock" id="clock">--:--:--</div>
+        <div>
+            <div class="clock" id="clock">--:--:--</div>
+            <div class="parc-name" id="parcName"></div>
+        </div>
         <div class="info"><span id="count">0</span> anniversaires en attente</div>
     </div>
     <div class="grid" id="grid"><div class="no-data">Aucune donnée</div></div>
     <script>
+        const PARC = window.location.pathname.split('/')[1] || 'default';
+        document.getElementById('parcName').textContent = PARC.toUpperCase();
+        
         let reservations=[],validations={};
         function updateClock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('fr-FR')}
         setInterval(updateClock,1000);updateClock();
         
         async function loadData(){
             try{
-                const res=await fetch('/api/kitchen');
+                const res=await fetch(`/${PARC}/api/kitchen`);
                 const data=await res.json();
                 reservations=data.reservations||[];
                 validations=data.validations||{};
@@ -58,7 +64,6 @@
                 
                 let rows='';
                 
-                // Ligne unique Chips/Bonbons + Boissons
                 rows+=`<div class="row ${v.snackBoissons?'done':''} ${snackBoissonsAlert?'alert':''}" onclick="toggleValidation('${r.id}','snackBoissons')">
                     <div>
                         <div class="row-label">${snackLabel} + BOISSONS</div>
@@ -67,35 +72,24 @@
                     <div class="row-check">${v.snackBoissons?'✓':''}</div>
                 </div>`;
                 
-                // Pizzas de base (si formule inclut pizzas)
                 const pizzasBase = (r.formule==='Morning/Night'||r.formule==='VIP') ? r.pizzas - (r.pizzasExtra||0) : 0;
                 if(pizzasBase>0){
                     rows+=createRow(r.id,'pizzas','PIZZAS',pizzasBase,v.pizzas,pizzaAlert);
                 }
                 
-                // Pizzas supplémentaires (ligne séparée)
                 if(r.pizzasExtra>0){
                     rows+=createRow(r.id,'pizzasSup','PIZZAS SUP.',r.pizzasExtra,v.pizzasSup,pizzaSupAlert);
                 }
                 
-                // Gâteau
                 if(r.gateauType){
                     rows+=createRow(r.id,'gateau','GATEAU',r.gateauType,v.gateau,gateauAlert);
                 }
                 
-                // Reine
                 if(r.reine>0)rows+=createRow(r.id,'reine','REINE',r.reine,v.reine,false);
-                
-                // Marguerite
                 if(r.marguerite>0)rows+=createRow(r.id,'marguerite','MARGUERITE',r.marguerite,v.marguerite,false);
-                
-                // Champagne
                 if(r.champagne>0)rows+=createRow(r.id,'champagne','CHAMPAGNE',r.champagne,v.champagne,false);
-                
-                // Pochettes
                 if(r.pochettes>0)rows+=createRow(r.id,'pochettes','POCHETTES',r.nbEnfants,v.pochettes,false);
                 
-                // Option texte (validable)
                 if(r.optionTexte){
                     rows+=`<div class="row row-option ${v.optionTexte?'done':''}" onclick="toggleValidation('${r.id}','optionTexte')">
                         <div>
@@ -131,7 +125,7 @@
         
         async function toggleValidation(resId,type){
             const current=validations[resId]?.[type];
-            const endpoint=current?'/api/unvalidate':'/api/validate';
+            const endpoint=current?`/${PARC}/api/unvalidate`:`/${PARC}/api/validate`;
             await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reservationId:resId,type})});
             if(!validations[resId])validations[resId]={};
             if(current)delete validations[resId][type];
@@ -140,7 +134,7 @@
         }
         
         async function markDone(id){
-            await fetch(`/api/reservation/${id}/done`,{method:'POST'});
+            await fetch(`/${PARC}/api/reservation/${id}/done`,{method:'POST'});
             loadData();
         }
         
