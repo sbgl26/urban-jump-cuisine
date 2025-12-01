@@ -205,13 +205,14 @@ app.post('/:parc/api/reservation/:id/done', async (req, res) => {
 
 app.post('/:parc/api/validate', async (req, res) => {
     const parc = req.params.parc;
-    const { reservationId, type } = req.body;
+    const { reservationId, type, value } = req.body;
     const db = await loadDB(parc);
     if (!db.validations[reservationId]) db.validations[reservationId] = {};
-    db.validations[reservationId][type] = true;
+    db.validations[reservationId][type] = value || true;
     await saveDB(parc, db);
     res.json({ success: true });
 });
+
 
 app.post('/:parc/api/unvalidate', async (req, res) => {
     const parc = req.params.parc;
