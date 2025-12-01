@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cuisine - Urban Jump</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}html,body{height:100%;overflow:hidden}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#000;color:#fff;height:100vh;padding:15px 20px;display:flex;flex-direction:column}.header{display:flex;justify-content:space-between;align-items:center;padding:8px 0 15px;border-bottom:1px solid #222;margin-bottom:15px;flex-shrink:0}.clock{font-size:48px;font-weight:700;font-variant-numeric:tabular-nums}.info{font-size:18px;color:#555}.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:10px;flex:1;min-height:0}.card{background:#111;border:1px solid #222;display:flex;flex-direction:column;overflow:hidden}.card-header{background:#1a1a1a;padding:12px 10px;border-bottom:1px solid #222;flex-shrink:0}.card-time{font-size:42px;font-weight:800;line-height:1;margin-bottom:6px}.card-name{font-size:14px;font-weight:600;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card-info{font-size:12px;color:#666;margin-top:2px}.card-formule{font-size:10px;color:#444;text-transform:uppercase;margin-top:3px}.card-body{flex:1;overflow-y:auto;display:flex;flex-direction:column}.row-combo{display:flex;border-bottom:1px solid #1a1a1a;flex-shrink:0}.row-combo .row-item{flex:1;display:flex;align-items:center;justify-content:space-between;padding:8px 10px;cursor:pointer;transition:background .15s}.row-combo .row-item:first-child{border-right:1px solid #1a1a1a}.row-combo .row-item:hover{background:#1a1a1a}.row{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-bottom:1px solid #1a1a1a;cursor:pointer;transition:background .15s;flex-shrink:0}.row:hover{background:#1a1a1a}.row-label{font-size:11px;font-weight:600;color:#888;text-transform:uppercase}.row-value{font-size:15px;font-weight:700}.row-check{width:18px;height:18px;border:2px solid #333;font-size:11px;display:flex;align-items:center;justify-content:center;color:transparent;flex-shrink:0;margin-left:6px}.row.done,.row-item.done{background:#0a2a0a!important;animation:none!important}.row.done .row-check,.row-item.done .row-check{border-color:#2a5a2a;background:#1a4a1a;color:#4a4}.row.done .row-label,.row-item.done .row-label{color:#4a4}.row.done .row-value,.row-item.done .row-value{color:#6c6}@keyframes blink{0%,100%{background:#111}50%{background:#3a2500}}.row.alert,.row-item.alert{animation:blink .7s ease-in-out infinite}.row.alert .row-label,.row-item.alert .row-label{color:#fa0!important}.row.alert .row-value,.row-item.alert .row-value{color:#fc0!important}.btn-done{margin:8px;padding:10px;background:#222;border:1px solid #333;color:#666;font-size:12px;font-weight:600;cursor:pointer;text-transform:uppercase;flex-shrink:0}.btn-done:hover{background:#333;color:#fff}.no-data{grid-column:1/-1;display:flex;align-items:center;justify-content:center;color:#333;font-size:28px}.option-texte{background:#1a1a0a;border-left:3px solid #aa0;padding:6px 10px;font-size:12px;color:#cc0;flex-shrink:0}
+        *{margin:0;padding:0;box-sizing:border-box}html,body{height:100%;overflow:hidden}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#000;color:#fff;height:100vh;padding:15px 20px;display:flex;flex-direction:column}.header{display:flex;justify-content:space-between;align-items:center;padding:8px 0 15px;border-bottom:1px solid #222;margin-bottom:15px;flex-shrink:0}.clock{font-size:48px;font-weight:700;font-variant-numeric:tabular-nums}.info{font-size:18px;color:#555}.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:10px;flex:1;min-height:0}.card{background:#111;border:1px solid #222;display:flex;flex-direction:column;overflow:hidden}.card-header{background:#1a1a1a;padding:12px 10px;border-bottom:1px solid #222;flex-shrink:0}.card-time{font-size:42px;font-weight:800;line-height:1;margin-bottom:6px}.card-name{font-size:14px;font-weight:600;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card-info{font-size:12px;color:#666;margin-top:2px}.card-formule{font-size:10px;color:#444;text-transform:uppercase;margin-top:3px}.card-body{flex:1;overflow-y:auto;display:flex;flex-direction:column}.row{display:flex;align-items:center;justify-content:space-between;padding:10px 10px;border-bottom:1px solid #1a1a1a;cursor:pointer;transition:background .15s;flex-shrink:0}.row:hover{background:#1a1a1a}.row-label{font-size:12px;font-weight:600;color:#888;text-transform:uppercase}.row-value{font-size:16px;font-weight:700}.row-check{width:20px;height:20px;border:2px solid #333;font-size:12px;display:flex;align-items:center;justify-content:center;color:transparent;flex-shrink:0;margin-left:8px}.row.done{background:#0a2a0a!important;animation:none!important}.row.done .row-check{border-color:#2a5a2a;background:#1a4a1a;color:#4a4}.row.done .row-label{color:#4a4}.row.done .row-value{color:#6c6}@keyframes blink{0%,100%{background:#111}50%{background:#3a2500}}.row.alert{animation:blink .7s ease-in-out infinite}.row.alert .row-label{color:#fa0!important}.row.alert .row-value{color:#fc0!important}.btn-done{margin:8px;padding:10px;background:#222;border:1px solid #333;color:#666;font-size:12px;font-weight:600;cursor:pointer;text-transform:uppercase;flex-shrink:0}.btn-done:hover{background:#333;color:#fff}.no-data{grid-column:1/-1;display:flex;align-items:center;justify-content:center;color:#333;font-size:28px}.row-option{background:#1a1a0a;border-left:3px solid #aa0}.row-option .row-label{color:#aa0}.row-option .row-value{color:#cc0;font-size:13px;font-weight:500}.row-option.done{background:#0a2a0a;border-left-color:#2a5a2a}.row-option.done .row-label{color:#4a4}.row-option.done .row-value{color:#6c6}
     </style>
 </head>
 <body>
@@ -15,7 +15,138 @@
     </div>
     <div class="grid" id="grid"><div class="no-data">Aucune donnée</div></div>
     <script>
-        let reservations=[],validations={};function updateClock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('fr-FR')}setInterval(updateClock,1000);updateClock();async function loadData(){try{const res=await fetch('/api/kitchen');const data=await res.json();reservations=data.reservations||[];validations=data.validations||{};render()}catch(err){console.error(err)}}function timeToMinutes(time){const[h,m]=time.split(':').map(Number);return h*60+m}function isAlertActive(heureRepas,offsetMinutes,isValidated){if(isValidated)return false;const now=new Date();const currentMin=now.getHours()*60+now.getMinutes();const repasMin=timeToMinutes(heureRepas);const alertMin=repasMin+offsetMinutes;return currentMin>=alertMin}function render(){const grid=document.getElementById('grid');document.getElementById('count').textContent=reservations.length;if(reservations.length===0){grid.innerHTML='<div class="no-data">Aucun anniversaire en attente</div>';return}grid.innerHTML=reservations.map(r=>{const v=validations[r.id]||{};const isClassique=r.formule==='Classique';const snackLabel=isClassique?'BONBONS':'CHIPS';const snackAlert=isAlertActive(r.heureRepas,-15,v.chips);const boissonsAlert=isAlertActive(r.heureRepas,-15,v.boissons);const pizzaAlert=isAlertActive(r.heureRepas,0,v.pizzas);const gateauAlert=isAlertActive(r.heureRepas,0,v.gateau);let rows=`<div class="row-combo"><div class="row-item ${v.chips?'done':''} ${snackAlert?'alert':''}" onclick="toggleValidation('${r.id}','chips')"><div><div class="row-label">${snackLabel}</div><div class="row-value">${r.chips} bols</div></div><div class="row-check">${v.chips?'✓':''}</div></div><div class="row-item ${v.boissons?'done':''} ${boissonsAlert?'alert':''}" onclick="toggleValidation('${r.id}','boissons')"><div><div class="row-label">BOISSONS</div><div class="row-value">${r.boissons} bout.</div></div><div class="row-check">${v.boissons?'✓':''}</div></div></div>`;if(r.pizzas>0)rows+=createRow(r.id,'pizzas','PIZZAS',r.pizzas,v.pizzas,pizzaAlert);if(r.gateauType)rows+=createRow(r.id,'gateau','GATEAU',r.gateauType,v.gateau,gateauAlert);if(r.reine>0)rows+=createRow(r.id,'reine','REINE',r.reine,v.reine,false);if(r.marguerite>0)rows+=createRow(r.id,'marguerite','MARGUERITE',r.marguerite,v.marguerite,false);if(r.champagne>0)rows+=createRow(r.id,'champagne','CHAMPAGNE',r.champagne,v.champagne,false);if(r.pochettes>0)rows+=createRow(r.id,'pochettes','POCHETTES',r.nbEnfants,v.pochettes,false);if(r.optionTexte)rows+=`<div class="option-texte">${r.optionTexte}</div>`;return`<div class="card" data-id="${r.id}"><div class="card-header"><div class="card-time">${r.heureRepas}</div><div class="card-name">${r.enfant}</div><div class="card-info">${r.age} ans - ${r.nbEnfants} enf.</div><div class="card-formule">${r.formule}</div></div><div class="card-body">${rows}</div><button class="btn-done" onclick="markDone('${r.id}')">TERMINER</button></div>`}).join('')}function createRow(id,type,label,value,isDone,isAlert){return`<div class="row ${isDone?'done':''} ${isAlert?'alert':''}" onclick="toggleValidation('${id}','${type}')"><div><div class="row-label">${label}</div><div class="row-value">${value}</div></div><div class="row-check">${isDone?'✓':''}</div></div>`}async function toggleValidation(resId,type){const current=validations[resId]?.[type];const endpoint=current?'/api/unvalidate':'/api/validate';await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reservationId:resId,type})});if(!validations[resId])validations[resId]={};if(current)delete validations[resId][type];else validations[resId][type]=true;render()}async function markDone(id){await fetch(`/api/reservation/${id}/done`,{method:'POST'});loadData()}setInterval(loadData,3000);setInterval(render,1000);loadData();
+        let reservations=[],validations={};
+        function updateClock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('fr-FR')}
+        setInterval(updateClock,1000);updateClock();
+        
+        async function loadData(){
+            try{
+                const res=await fetch('/api/kitchen');
+                const data=await res.json();
+                reservations=data.reservations||[];
+                validations=data.validations||{};
+                render();
+            }catch(err){console.error(err)}
+        }
+        
+        function timeToMinutes(time){const[h,m]=time.split(':').map(Number);return h*60+m}
+        
+        function isAlertActive(heureRepas,offsetMinutes,isValidated){
+            if(isValidated)return false;
+            const now=new Date();
+            const currentMin=now.getHours()*60+now.getMinutes();
+            const repasMin=timeToMinutes(heureRepas);
+            const alertMin=repasMin+offsetMinutes;
+            return currentMin>=alertMin;
+        }
+        
+        function render(){
+            const grid=document.getElementById('grid');
+            document.getElementById('count').textContent=reservations.length;
+            if(reservations.length===0){
+                grid.innerHTML='<div class="no-data">Aucun anniversaire en attente</div>';
+                return;
+            }
+            grid.innerHTML=reservations.map(r=>{
+                const v=validations[r.id]||{};
+                const isClassique=r.formule==='Classique';
+                const snackLabel=isClassique?'BONBONS':'CHIPS';
+                const snackBoissonsAlert=isAlertActive(r.heureRepas,-15,v.snackBoissons);
+                const pizzaAlert=isAlertActive(r.heureRepas,0,v.pizzas);
+                const pizzaSupAlert=isAlertActive(r.heureRepas,0,v.pizzasSup);
+                const gateauAlert=isAlertActive(r.heureRepas,0,v.gateau);
+                
+                let rows='';
+                
+                // Ligne unique Chips/Bonbons + Boissons
+                rows+=`<div class="row ${v.snackBoissons?'done':''} ${snackBoissonsAlert?'alert':''}" onclick="toggleValidation('${r.id}','snackBoissons')">
+                    <div>
+                        <div class="row-label">${snackLabel} + BOISSONS</div>
+                        <div class="row-value">${r.chips} bols / ${r.boissons} bout.</div>
+                    </div>
+                    <div class="row-check">${v.snackBoissons?'✓':''}</div>
+                </div>`;
+                
+                // Pizzas de base (si formule inclut pizzas)
+                const pizzasBase = (r.formule==='Morning/Night'||r.formule==='VIP') ? r.pizzas - (r.pizzasExtra||0) : 0;
+                if(pizzasBase>0){
+                    rows+=createRow(r.id,'pizzas','PIZZAS',pizzasBase,v.pizzas,pizzaAlert);
+                }
+                
+                // Pizzas supplémentaires (ligne séparée)
+                if(r.pizzasExtra>0){
+                    rows+=createRow(r.id,'pizzasSup','PIZZAS SUP.',r.pizzasExtra,v.pizzasSup,pizzaSupAlert);
+                }
+                
+                // Gâteau
+                if(r.gateauType){
+                    rows+=createRow(r.id,'gateau','GATEAU',r.gateauType,v.gateau,gateauAlert);
+                }
+                
+                // Reine
+                if(r.reine>0)rows+=createRow(r.id,'reine','REINE',r.reine,v.reine,false);
+                
+                // Marguerite
+                if(r.marguerite>0)rows+=createRow(r.id,'marguerite','MARGUERITE',r.marguerite,v.marguerite,false);
+                
+                // Champagne
+                if(r.champagne>0)rows+=createRow(r.id,'champagne','CHAMPAGNE',r.champagne,v.champagne,false);
+                
+                // Pochettes
+                if(r.pochettes>0)rows+=createRow(r.id,'pochettes','POCHETTES',r.nbEnfants,v.pochettes,false);
+                
+                // Option texte (validable)
+                if(r.optionTexte){
+                    rows+=`<div class="row row-option ${v.optionTexte?'done':''}" onclick="toggleValidation('${r.id}','optionTexte')">
+                        <div>
+                            <div class="row-label">OPTION</div>
+                            <div class="row-value">${r.optionTexte}</div>
+                        </div>
+                        <div class="row-check">${v.optionTexte?'✓':''}</div>
+                    </div>`;
+                }
+                
+                return`<div class="card" data-id="${r.id}">
+                    <div class="card-header">
+                        <div class="card-time">${r.heureRepas}</div>
+                        <div class="card-name">${r.enfant}</div>
+                        <div class="card-info">${r.age} ans - ${r.nbEnfants} enf.</div>
+                        <div class="card-formule">${r.formule}</div>
+                    </div>
+                    <div class="card-body">${rows}</div>
+                    <button class="btn-done" onclick="markDone('${r.id}')">TERMINER</button>
+                </div>`;
+            }).join('');
+        }
+        
+        function createRow(id,type,label,value,isDone,isAlert){
+            return`<div class="row ${isDone?'done':''} ${isAlert?'alert':''}" onclick="toggleValidation('${id}','${type}')">
+                <div>
+                    <div class="row-label">${label}</div>
+                    <div class="row-value">${value}</div>
+                </div>
+                <div class="row-check">${isDone?'✓':''}</div>
+            </div>`;
+        }
+        
+        async function toggleValidation(resId,type){
+            const current=validations[resId]?.[type];
+            const endpoint=current?'/api/unvalidate':'/api/validate';
+            await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reservationId:resId,type})});
+            if(!validations[resId])validations[resId]={};
+            if(current)delete validations[resId][type];
+            else validations[resId][type]=true;
+            render();
+        }
+        
+        async function markDone(id){
+            await fetch(`/api/reservation/${id}/done`,{method:'POST'});
+            loadData();
+        }
+        
+        setInterval(loadData,3000);
+        setInterval(render,1000);
+        loadData();
     </script>
 </body>
 </html>
