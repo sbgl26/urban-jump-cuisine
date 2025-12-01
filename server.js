@@ -15,13 +15,13 @@ const redis = new Redis({
 app.use(express.json());
 app.use(express.static('public'));
 
-async function loadDB() {
-    const data = await redis.get('urban-jump-db');
+async function loadDB(parc) {
+    const data = await redis.get(`urban-jump-${parc}`);
     return data || { reservations: [], validations: {} };
 }
 
-async function saveDB(data) {
-    await redis.set('urban-jump-db', data);
+async function saveDB(parc, data) {
+    await redis.set(`urban-jump-${parc}`, data);
 }
 
 function calculateMealTime(heureDebut, formule) {
@@ -127,72 +127,103 @@ function parseReservations(text) {
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'cuisine.html')));
-app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
+// Page d'accueil
+app.get('/', (req, res) => {
+    res.send(`
+        <html>
+        <head><title>Urban Jump Kitchen</title>
+        <style>body{font-family:sans-serif;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column}
+        a{color:#fff;background:#222;padding:20px 40px;margin:10px;text-decoration:none;font-size:20px;border:1px solid #333}a:hover{background:#333}</style>
+        </head>
+        <body>
+        <h1>Urban Jump Kitchen</h1>
+        <p style="color:#666;margin-bottom:30px">Ajoute le nom du parc dans l'URL</p>
+        <a href="/vallauris">Vallauris</a>
+        <a href="/aix">Aix</a>
+        <a href="/frejus">Fréjus</a>
+        <p style="color:#444;margin-top:50px">Ou tape directement : /nomduparc</p>
+        </body></html>
+    `);
+});
 
-app.post('/api/upload', upload.single('pdf'), async (req, res) => {
+// Pages par parc
+app.get('/:parc', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'cuisine.html'));
+});
+
+app.get('/:parc/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
+// API par parc
+app.post('/:parc/api/upload', upload.single('pdf'), async (req, res) => {
     try {
+        const parc = req.params.parc;
         if (!req.file) return res.status(400).json({ error: 'Aucun fichier' });
         const data = await pdfParse(req.file.buffer);
         const reservations = parseReservations(data.text);
-        await saveDB({ reservations, validations: {} });
+        await saveDB(parc, { reservations, validations: {} });
         res.json({ success: true, count: reservations.length });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
 
-app.get('/api/reservations', async (req, res) => {
-    const db = await loadDB();
+app.get('/:parc/api/reservations', async (req, res) => {
+    const db = await loadDB(req.params.parc);
     res.json(db);
 });
 
-app.get('/api/kitchen', async (req, res) => {
-    const db = await loadDB();
+app.get('/:parc/api/kitchen', async (req, res) => {
+    const db = await loadDB(req.params.parc);
     const active = db.reservations.filter(r => !r.done).sort((a, b) => a.heureRepas.localeCompare(b.heureRepas)).slice(0, 10);
     res.json({ reservations: active, validations: db.validations });
 });
 
-app.post('/api/reservation/:id', async (req, res) => {
-    const db = await loadDB();
+app.post('/:parc/api/reservation/:id', async (req, res) => {
+    const parc = req.params.parc;
+    const db = await loadDB(parc);
     const index = db.reservations.findIndex(r => r.id === req.params.id);
     if (index === -1) return res.status(404).json({ error: 'Non trouvé' });
     Object.assign(db.reservations[index], req.body);
     if (req.body.nbEnfants !== undefined || req.body.pizzasExtra !== undefined) {
         recalculateQuantities(db.reservations[index]);
     }
-    await saveDB(db);
+    await saveDB(parc, db);
     res.json({ success: true, reservation: db.reservations[index] });
 });
 
-app.post('/api/reservation/:id/done', async (req, res) => {
-    const db = await loadDB();
+app.post('/:parc/api/reservation/:id/done', async (req, res) => {
+    const parc = req.params.parc;
+    const db = await loadDB(parc);
     const index = db.reservations.findIndex(r => r.id === req.params.id);
     if (index === -1) return res.status(404).json({ error: 'Non trouvé' });
     db.reservations[index].done = true;
-    await saveDB(db);
+    await saveDB(parc, db);
     res.json({ success: true });
 });
 
-app.post('/api/validate', async (req, res) => {
+app.post('/:parc/api/validate', async (req, res) => {
+    const parc = req.params.parc;
     const { reservationId, type } = req.body;
-    const db = await loadDB();
+    const db = await loadDB(parc);
     if (!db.validations[reservationId]) db.validations[reservationId] = {};
     db.validations[reservationId][type] = true;
-    await saveDB(db);
+    await saveDB(parc, db);
     res.json({ success: true });
 });
 
-app.post('/api/unvalidate', async (req, res) => {
+app.post('/:parc/api/unvalidate', async (req, res) => {
+    const parc = req.params.parc;
     const { reservationId, type } = req.body;
-    const db = await loadDB();
+    const db = await loadDB(parc);
     if (db.validations[reservationId]) delete db.validations[reservationId][type];
-    await saveDB(db);
+    await saveDB(parc, db);
     res.json({ success: true });
 });
 
-app.post('/api/reset', async (req, res) => {
-    await saveDB({ reservations: [], validations: {} });
+app.post('/:parc/api/reset', async (req, res) => {
+    await saveDB(req.params.parc, { reservations: [], validations: {} });
     res.json({ success: true });
 });
 
