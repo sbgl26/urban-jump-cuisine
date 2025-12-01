@@ -5,15 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Urban Jump</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0a;color:#fff;min-height:100vh;padding:25px}.container{max-width:1600px;margin:0 auto}.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;padding-bottom:20px;border-bottom:1px solid #222}.header h1{font-size:24px;font-weight:600;color:#888}.header-actions{display:flex;gap:15px}.btn{background:#222;color:#888;border:1px solid #333;padding:12px 24px;font-size:14px;cursor:pointer;transition:all .2s;text-decoration:none}.btn:hover{background:#333;color:#fff}.upload-section{background:#111;border:1px solid #222;padding:35px;margin-bottom:30px}.upload-zone{border:2px dashed #333;padding:50px;text-align:center;cursor:pointer;transition:all .2s}.upload-zone:hover,.upload-zone.dragover{border-color:#555;background:#1a1a1a}.upload-text{color:#555;margin-bottom:20px;font-size:16px}.upload-status{margin-top:20px;font-size:15px;color:#666}.upload-status.success{color:#4a4}.upload-status.error{color:#a44}#fileInput{display:none}.reservations-section{background:#111;border:1px solid #222}.section-header{padding:20px 25px;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center}.section-title{font-size:16px;font-weight:600;color:#888}.reservations-list{max-height:70vh;overflow-y:auto}.res-card{border-bottom:1px solid #1a1a1a;padding:20px 25px;display:grid;grid-template-columns:100px 220px 1fr auto;gap:25px;align-items:start}.res-card:hover{background:#151515}.res-card.done{opacity:.4}.res-time{font-size:32px;font-weight:700}.res-info{line-height:1.5}.res-name{font-weight:600;font-size:18px;margin-bottom:4px}.res-details{font-size:14px;color:#666}.res-formule{font-size:12px;color:#555;text-transform:uppercase;margin-top:4px}.res-controls{display:flex;flex-direction:column;gap:12px}.controls-row{display:flex;gap:20px;flex-wrap:wrap;align-items:center}.control-group{display:flex;align-items:center;gap:10px}.control-label{font-size:12px;color:#555;text-transform:uppercase;min-width:60px}.control-input{background:#1a1a1a;border:1px solid #333;color:#fff;padding:8px 12px;font-size:15px;width:70px;text-align:center}.control-input:focus{outline:none;border-color:#555}.control-btn{background:#222;border:1px solid #333;color:#666;width:32px;height:32px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}.control-btn:hover{background:#333;color:#fff}.res-actions{display:flex;flex-direction:column;gap:10px}.btn-small{padding:10px 16px;font-size:12px}.options-row{display:flex;gap:12px;flex-wrap:wrap}.option-badge{background:#1a1a1a;border:1px solid #333;padding:6px 14px;font-size:13px;color:#666;cursor:pointer;transition:all .2s}.option-badge:hover{border-color:#555}.option-badge.active{background:#1a3a1a;color:#4a4;border-color:#2a5a2a}.option-texte-input{background:#1a1a1a;border:1px solid #333;color:#fff;padding:8px 12px;font-size:14px;flex:1;min-width:200px}.option-texte-input:focus{outline:none;border-color:#aa0}.option-texte-input::placeholder{color:#444}.no-reservations{padding:80px 25px;text-align:center;color:#333;font-size:18px}@media(max-width:1200px){.res-card{grid-template-columns:1fr;gap:15px}.res-time{font-size:28px}}
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0a;color:#fff;min-height:100vh;padding:25px}.container{max-width:1600px;margin:0 auto}.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;padding-bottom:20px;border-bottom:1px solid #222}.header h1{font-size:24px;font-weight:600;color:#888}.parc-badge{background:#222;color:#fff;padding:8px 16px;font-size:14px;text-transform:uppercase;margin-left:15px}.header-actions{display:flex;gap:15px}.btn{background:#222;color:#888;border:1px solid #333;padding:12px 24px;font-size:14px;cursor:pointer;transition:all .2s;text-decoration:none}.btn:hover{background:#333;color:#fff}.upload-section{background:#111;border:1px solid #222;padding:35px;margin-bottom:30px}.upload-zone{border:2px dashed #333;padding:50px;text-align:center;cursor:pointer;transition:all .2s}.upload-zone:hover,.upload-zone.dragover{border-color:#555;background:#1a1a1a}.upload-text{color:#555;margin-bottom:20px;font-size:16px}.upload-status{margin-top:20px;font-size:15px;color:#666}.upload-status.success{color:#4a4}.upload-status.error{color:#a44}#fileInput{display:none}.reservations-section{background:#111;border:1px solid #222}.section-header{padding:20px 25px;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center}.section-title{font-size:16px;font-weight:600;color:#888}.reservations-list{max-height:70vh;overflow-y:auto}.res-card{border-bottom:1px solid #1a1a1a;padding:20px 25px;display:grid;grid-template-columns:100px 220px 1fr auto;gap:25px;align-items:start}.res-card:hover{background:#151515}.res-card.done{opacity:.4}.res-time{font-size:32px;font-weight:700}.res-info{line-height:1.5}.res-name{font-weight:600;font-size:18px;margin-bottom:4px}.res-details{font-size:14px;color:#666}.res-formule{font-size:12px;color:#555;text-transform:uppercase;margin-top:4px}.res-controls{display:flex;flex-direction:column;gap:12px}.controls-row{display:flex;gap:20px;flex-wrap:wrap;align-items:center}.control-group{display:flex;align-items:center;gap:10px}.control-label{font-size:12px;color:#555;text-transform:uppercase;min-width:60px}.control-input{background:#1a1a1a;border:1px solid #333;color:#fff;padding:8px 12px;font-size:15px;width:70px;text-align:center}.control-input:focus{outline:none;border-color:#555}.control-btn{background:#222;border:1px solid #333;color:#666;width:32px;height:32px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}.control-btn:hover{background:#333;color:#fff}.res-actions{display:flex;flex-direction:column;gap:10px}.btn-small{padding:10px 16px;font-size:12px}.options-row{display:flex;gap:12px;flex-wrap:wrap}.option-badge{background:#1a1a1a;border:1px solid #333;padding:6px 14px;font-size:13px;color:#666;cursor:pointer;transition:all .2s}.option-badge:hover{border-color:#555}.option-badge.active{background:#1a3a1a;color:#4a4;border-color:#2a5a2a}.option-texte-input{background:#1a1a1a;border:1px solid #333;color:#fff;padding:8px 12px;font-size:14px;flex:1;min-width:200px}.option-texte-input:focus{outline:none;border-color:#aa0}.option-texte-input::placeholder{color:#444}.no-reservations{padding:80px 25px;text-align:center;color:#333;font-size:18px}@media(max-width:1200px){.res-card{grid-template-columns:1fr;gap:15px}.res-time{font-size:28px}}
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>URBAN JUMP - ADMIN</h1>
+            <div style="display:flex;align-items:center">
+                <h1>URBAN JUMP - ADMIN</h1>
+                <span class="parc-badge" id="parcBadge"></span>
+            </div>
             <div class="header-actions">
-                <a href="/" class="btn">Voir écran cuisine</a>
+                <a href="#" class="btn" id="linkCuisine">Voir écran cuisine</a>
                 <button class="btn" onclick="resetAll()">Reset tout</button>
             </div>
         </div>
@@ -36,7 +39,115 @@
         </div>
     </div>
     <script>
-        let reservations=[];const uploadZone=document.getElementById('uploadZone');const fileInput=document.getElementById('fileInput');const uploadStatus=document.getElementById('uploadStatus');uploadZone.addEventListener('dragover',e=>{e.preventDefault();uploadZone.classList.add('dragover')});uploadZone.addEventListener('dragleave',()=>{uploadZone.classList.remove('dragover')});uploadZone.addEventListener('drop',e=>{e.preventDefault();uploadZone.classList.remove('dragover');const file=e.dataTransfer.files[0];if(file&&file.type==='application/pdf')uploadFile(file)});fileInput.addEventListener('change',e=>{const file=e.target.files[0];if(file)uploadFile(file)});async function uploadFile(file){uploadStatus.textContent='Chargement...';uploadStatus.className='upload-status';const formData=new FormData();formData.append('pdf',file);try{const res=await fetch('/api/upload',{method:'POST',body:formData});const data=await res.json();if(data.success){uploadStatus.textContent=`${data.count} anniversaires importés`;uploadStatus.className='upload-status success';loadData()}else throw new Error(data.error)}catch(err){uploadStatus.textContent='Erreur: '+err.message;uploadStatus.className='upload-status error'}}async function loadData(){try{const res=await fetch('/api/reservations');const data=await res.json();reservations=data.reservations||[];render()}catch(err){console.error(err)}}function render(){const list=document.getElementById('reservationsList');const active=reservations.filter(r=>!r.done);const done=reservations.filter(r=>r.done);document.getElementById('totalCount').textContent=`${active.length} en attente / ${done.length} terminés`;if(reservations.length===0){list.innerHTML='<div class="no-reservations">Aucune réservation</div>';return}list.innerHTML=[...active,...done].map(r=>`<div class="res-card ${r.done?'done':''}" data-id="${r.id}"><div class="res-time">${r.heureRepas}</div><div class="res-info"><div class="res-name">${r.enfant}</div><div class="res-details">${r.age} ans - Début ${r.heureDebut}</div><div class="res-formule">${r.formule}</div></div><div class="res-controls"><div class="controls-row"><div class="control-group"><span class="control-label">Enfants</span><button class="control-btn" onclick="updateField('${r.id}','nbEnfants',${r.nbEnfants-1})">-</button><input type="number" class="control-input" value="${r.nbEnfants}" onchange="updateField('${r.id}','nbEnfants',this.value)"><button class="control-btn" onclick="updateField('${r.id}','nbEnfants',${r.nbEnfants+1})">+</button></div><div class="control-group"><span class="control-label">Pizzas+</span><button class="control-btn" onclick="updateField('${r.id}','pizzasExtra',${Math.max(0,(r.pizzasExtra||0)-1)})">-</button><input type="number" class="control-input" value="${r.pizzasExtra||0}" onchange="updateField('${r.id}','pizzasExtra',this.value)"><button class="control-btn" onclick="updateField('${r.id}','pizzasExtra',${(r.pizzasExtra||0)+1})">+</button></div></div><div class="controls-row"><div class="options-row"><span class="option-badge ${r.reine>0?'active':''}" onclick="toggleOption('${r.id}','reine',${r.reine})">Reine ${r.reine>0?`(${r.reine})`:''}</span><span class="option-badge ${r.marguerite>0?'active':''}" onclick="toggleOption('${r.id}','marguerite',${r.marguerite})">Marguerite ${r.marguerite>0?`(${r.marguerite})`:''}</span><span class="option-badge ${r.champagne>0?'active':''}" onclick="toggleOption('${r.id}','champagne',${r.champagne})">Champagne ${r.champagne>0?`(${r.champagne})`:''}</span><span class="option-badge ${r.pochettes>0?'active':''}" onclick="toggleOption('${r.id}','pochettes',${r.pochettes>0?0:r.nbEnfants})">Pochettes ${r.pochettes>0?`(${r.nbEnfants})`:''}</span></div></div><div class="controls-row"><input type="text" class="option-texte-input" placeholder="Option libre (ex: pizza poulet-oignons)" value="${r.optionTexte||''}" onchange="updateField('${r.id}','optionTexte',this.value)"></div></div><div class="res-actions">${!r.done?`<button class="btn btn-small" onclick="markDone('${r.id}')">Terminer</button>`:`<button class="btn btn-small" onclick="markUndone('${r.id}')">Réactiver</button>`}</div></div>`).join('')}async function updateField(id,field,value){if(field!=='optionTexte'){value=parseInt(value)||0;if(field==='nbEnfants'&&value<1)value=1;if(field==='pizzasExtra'&&value<0)value=0}await fetch(`/api/reservation/${id}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({[field]:value})});loadData()}async function toggleOption(id,field,currentValue){const newValue=currentValue>0?0:1;await fetch(`/api/reservation/${id}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({[field]:newValue})});loadData()}async function markDone(id){await fetch(`/api/reservation/${id}/done`,{method:'POST'});loadData()}async function markUndone(id){await fetch(`/api/reservation/${id}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({done:false})});loadData()}async function resetAll(){if(confirm('Effacer toutes les données ?')){await fetch('/api/reset',{method:'POST'});loadData()}}loadData();setInterval(loadData,5000);
+        const PARC = window.location.pathname.split('/')[1] || 'default';
+        document.getElementById('parcBadge').textContent = PARC.toUpperCase();
+        document.getElementById('linkCuisine').href = `/${PARC}`;
+        
+        let reservations=[];
+        const uploadZone=document.getElementById('uploadZone');
+        const fileInput=document.getElementById('fileInput');
+        const uploadStatus=document.getElementById('uploadStatus');
+        
+        uploadZone.addEventListener('dragover',e=>{e.preventDefault();uploadZone.classList.add('dragover')});
+        uploadZone.addEventListener('dragleave',()=>{uploadZone.classList.remove('dragover')});
+        uploadZone.addEventListener('drop',e=>{e.preventDefault();uploadZone.classList.remove('dragover');const file=e.dataTransfer.files[0];if(file&&file.type==='application/pdf')uploadFile(file)});
+        fileInput.addEventListener('change',e=>{const file=e.target.files[0];if(file)uploadFile(file)});
+        
+        async function uploadFile(file){
+            uploadStatus.textContent='Chargement...';
+            uploadStatus.className='upload-status';
+            const formData=new FormData();
+            formData.append('pdf',file);
+            try{
+                const res=await fetch(`/${PARC}/api/upload`,{method:'POST',body:formData});
+                const data=await res.json();
+                if(data.success){
+                    uploadStatus.textContent=`${data.count} anniversaires importés`;
+                    uploadStatus.className='upload-status success';
+                    loadData();
+                }else throw new Error(data.error);
+            }catch(err){
+                uploadStatus.textContent='Erreur: '+err.message;
+                uploadStatus.className='upload-status error';
+            }
+        }
+        
+        async function loadData(){
+            try{
+                const res=await fetch(`/${PARC}/api/reservations`);
+                const data=await res.json();
+                reservations=data.reservations||[];
+                render();
+            }catch(err){console.error(err)}
+        }
+        
+        function render(){
+            const list=document.getElementById('reservationsList');
+            const active=reservations.filter(r=>!r.done);
+            const done=reservations.filter(r=>r.done);
+            document.getElementById('totalCount').textContent=`${active.length} en attente / ${done.length} terminés`;
+            if(reservations.length===0){
+                list.innerHTML='<div class="no-reservations">Aucune réservation</div>';
+                return;
+            }
+            list.innerHTML=[...active,...done].map(r=>`<div class="res-card ${r.done?'done':''}" data-id="${r.id}">
+                <div class="res-time">${r.heureRepas}</div>
+                <div class="res-info">
+                    <div class="res-name">${r.enfant}</div>
+                    <div class="res-details">${r.age} ans - Début ${r.heureDebut}</div>
+                    <div class="res-formule">${r.formule}</div>
+                </div>
+                <div class="res-controls">
+                    <div class="controls-row">
+                        <div class="control-group">
+                            <span class="control-label">Enfants</span>
+                            <button class="control-btn" onclick="updateField('${r.id}','nbEnfants',${r.nbEnfants-1})">-</button>
+                            <input type="number" class="control-input" value="${r.nbEnfants}" onchange="updateField('${r.id}','nbEnfants',this.value)">
+                            <button class="control-btn" onclick="updateField('${r.id}','nbEnfants',${r.nbEnfants+1})">+</button>
+                        </div>
+                        <div class="control-group">
+                            <span class="control-label">Pizzas+</span>
+                            <button class="control-btn" onclick="updateField('${r.id}','pizzasExtra',${Math.max(0,(r.pizzasExtra||0)-1)})">-</button>
+                            <input type="number" class="control-input" value="${r.pizzasExtra||0}" onchange="updateField('${r.id}','pizzasExtra',this.value)">
+                            <button class="control-btn" onclick="updateField('${r.id}','pizzasExtra',${(r.pizzasExtra||0)+1})">+</button>
+                        </div>
+                    </div>
+                    <div class="controls-row">
+                        <div class="options-row">
+                            <span class="option-badge ${r.reine>0?'active':''}" onclick="toggleOption('${r.id}','reine',${r.reine})">Reine ${r.reine>0?`(${r.reine})`:''}</span>
+                            <span class="option-badge ${r.marguerite>0?'active':''}" onclick="toggleOption('${r.id}','marguerite',${r.marguerite})">Marguerite ${r.marguerite>0?`(${r.marguerite})`:''}</span>
+                            <span class="option-badge ${r.champagne>0?'active':''}" onclick="toggleOption('${r.id}','champagne',${r.champagne})">Champagne ${r.champagne>0?`(${r.champagne})`:''}</span>
+                            <span class="option-badge ${r.pochettes>0?'active':''}" onclick="toggleOption('${r.id}','pochettes',${r.pochettes>0?0:r.nbEnfants})">Pochettes ${r.pochettes>0?`(${r.nbEnfants})`:''}</span>
+                        </div>
+                    </div>
+                    <div class="controls-row">
+                        <input type="text" class="option-texte-input" placeholder="Option libre (ex: pizza poulet-oignons)" value="${r.optionTexte||''}" onchange="updateField('${r.id}','optionTexte',this.value)">
+                    </div>
+                </div>
+                <div class="res-actions">
+                    ${!r.done?`<button class="btn btn-small" onclick="markDone('${r.id}')">Terminer</button>`:`<button class="btn btn-small" onclick="markUndone('${r.id}')">Réactiver</button>`}
+                </div>
+            </div>`).join('');
+        }
+        
+        async function updateField(id,field,value){
+            if(field!=='optionTexte'){value=parseInt(value)||0;if(field==='nbEnfants'&&value<1)value=1;if(field==='pizzasExtra'&&value<0)value=0}
+            await fetch(`/${PARC}/api/reservation/${id}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({[field]:value})});
+            loadData();
+        }
+        
+        async function toggleOption(id,field,currentValue){
+            const newValue=currentValue>0?0:1;
+            await fetch(`/${PARC}/api/reservation/${id}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({[field]:newValue})});
+            loadData();
+        }
+        
+        async function markDone(id){await fetch(`/${PARC}/api/reservation/${id}/done`,{method:'POST'});loadData()}
+        async function markUndone(id){await fetch(`/${PARC}/api/reservation/${id}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({done:false})});loadData()}
+        async function resetAll(){if(confirm('Effacer toutes les données ?')){await fetch(`/${PARC}/api/reset`,{method:'POST'});loadData()}}
+        
+        loadData();
+        setInterval(loadData,5000);
     </script>
 </body>
 </html>
