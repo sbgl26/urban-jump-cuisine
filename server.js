@@ -1,16 +1,28 @@
 const express = require('express');
 const multer = require('multer');
 const pdfParse = require('pdf-parse');
-const fs = require('fs');
 const path = require('path');
+const { Redis } = require('@upstash/redis');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const redis = new Redis({
+    url: process.env.UPSTASH_REDIS_REST_URL,
+    token: process.env.UPSTASH_REDIS_REST_TOKEN
+});
+
 app.use(express.json());
 app.use(express.static('public'));
 
-let DB = { reservations: [], validations: {} };
+async function loadDB() {
+    const data = await redis.get('urban-jump-db');
+    return data || { reservations: [], validations: {} };
+}
+
+async function saveDB(data) {
+    await redis.set('urban-jump-db', data);
+}
 
 function calculateMealTime(heureDebut, formule) {
     const [h, m] = heureDebut.split(':').map(Number);
@@ -37,9 +49,7 @@ function recalculateQuantities(reservation) {
     reservation.pizzas += reservation.pizzasExtra || 0;
     reservation.chips = calculateChips(reservation.nbEnfants);
     reservation.boissons = calculateChips(reservation.nbEnfants);
-    if (reservation.pochettes > 0) {
-        reservation.pochettes = reservation.nbEnfants;
-    }
+    if (reservation.pochettes > 0) reservation.pochettes = reservation.nbEnfants;
     return reservation;
 }
 
@@ -124,52 +134,65 @@ app.post('/api/upload', upload.single('pdf'), async (req, res) => {
     try {
         if (!req.file) return res.status(400).json({ error: 'Aucun fichier' });
         const data = await pdfParse(req.file.buffer);
-        DB.reservations = parseReservations(data.text);
-        DB.validations = {};
-        res.json({ success: true, count: DB.reservations.length });
+        const reservations = parseReservations(data.text);
+        await saveDB({ reservations, validations: {} });
+        res.json({ success: true, count: reservations.length });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
 
-app.get('/api/reservations', (req, res) => res.json(DB));
-app.get('/api/kitchen', (req, res) => {
-    const active = DB.reservations.filter(r => !r.done).sort((a, b) => a.heureRepas.localeCompare(b.heureRepas)).slice(0, 10);
-    res.json({ reservations: active, validations: DB.validations });
+app.get('/api/reservations', async (req, res) => {
+    const db = await loadDB();
+    res.json(db);
 });
 
-app.post('/api/reservation/:id', (req, res) => {
-    const index = DB.reservations.findIndex(r => r.id === req.params.id);
+app.get('/api/kitchen', async (req, res) => {
+    const db = await loadDB();
+    const active = db.reservations.filter(r => !r.done).sort((a, b) => a.heureRepas.localeCompare(b.heureRepas)).slice(0, 10);
+    res.json({ reservations: active, validations: db.validations });
+});
+
+app.post('/api/reservation/:id', async (req, res) => {
+    const db = await loadDB();
+    const index = db.reservations.findIndex(r => r.id === req.params.id);
     if (index === -1) return res.status(404).json({ error: 'Non trouvé' });
-    Object.assign(DB.reservations[index], req.body);
+    Object.assign(db.reservations[index], req.body);
     if (req.body.nbEnfants !== undefined || req.body.pizzasExtra !== undefined) {
-        recalculateQuantities(DB.reservations[index]);
+        recalculateQuantities(db.reservations[index]);
     }
-    res.json({ success: true, reservation: DB.reservations[index] });
+    await saveDB(db);
+    res.json({ success: true, reservation: db.reservations[index] });
 });
 
-app.post('/api/reservation/:id/done', (req, res) => {
-    const index = DB.reservations.findIndex(r => r.id === req.params.id);
+app.post('/api/reservation/:id/done', async (req, res) => {
+    const db = await loadDB();
+    const index = db.reservations.findIndex(r => r.id === req.params.id);
     if (index === -1) return res.status(404).json({ error: 'Non trouvé' });
-    DB.reservations[index].done = true;
+    db.reservations[index].done = true;
+    await saveDB(db);
     res.json({ success: true });
 });
 
-app.post('/api/validate', (req, res) => {
+app.post('/api/validate', async (req, res) => {
     const { reservationId, type } = req.body;
-    if (!DB.validations[reservationId]) DB.validations[reservationId] = {};
-    DB.validations[reservationId][type] = true;
+    const db = await loadDB();
+    if (!db.validations[reservationId]) db.validations[reservationId] = {};
+    db.validations[reservationId][type] = true;
+    await saveDB(db);
     res.json({ success: true });
 });
 
-app.post('/api/unvalidate', (req, res) => {
+app.post('/api/unvalidate', async (req, res) => {
     const { reservationId, type } = req.body;
-    if (DB.validations[reservationId]) delete DB.validations[reservationId][type];
+    const db = await loadDB();
+    if (db.validations[reservationId]) delete db.validations[reservationId][type];
+    await saveDB(db);
     res.json({ success: true });
 });
 
-app.post('/api/reset', (req, res) => {
-    DB = { reservations: [], validations: {} };
+app.post('/api/reset', async (req, res) => {
+    await saveDB({ reservations: [], validations: {} });
     res.json({ success: true });
 });
 
