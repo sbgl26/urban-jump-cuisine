@@ -5,7 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cuisine - Urban Jump</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}html,body{height:100%;overflow:hidden}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#000;color:#fff;height:100vh;padding:15px 20px;display:flex;flex-direction:column}.header{display:flex;justify-content:space-between;align-items:center;padding:8px 0 15px;border-bottom:1px solid #222;margin-bottom:15px;flex-shrink:0}.clock{font-size:48px;font-weight:700;font-variant-numeric:tabular-nums}.info{font-size:18px;color:#555}.parc-name{font-size:14px;color:#444;text-transform:uppercase}.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:10px;flex:1;min-height:0}.card{background:#111;border:1px solid #222;display:flex;flex-direction:column;overflow:hidden}.card-header{background:#1a1a1a;padding:12px 10px;border-bottom:1px solid #222;flex-shrink:0}.card-time{font-size:42px;font-weight:800;line-height:1;margin-bottom:6px}.card-name{font-size:14px;font-weight:600;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card-info{font-size:12px;color:#666;margin-top:2px}.card-formule{font-size:10px;color:#444;text-transform:uppercase;margin-top:3px}.card-body{flex:1;overflow-y:auto;display:flex;flex-direction:column}.row{display:flex;align-items:center;justify-content:space-between;padding:10px 10px;border-bottom:1px solid #1a1a1a;cursor:pointer;transition:background .15s;flex-shrink:0}.row:hover{background:#1a1a1a}.row-label{font-size:12px;font-weight:600;color:#888;text-transform:uppercase}.row-value{font-size:16px;font-weight:700}.row-check{width:20px;height:20px;border:2px solid #333;font-size:12px;display:flex;align-items:center;justify-content:center;color:transparent;flex-shrink:0;margin-left:8px}.row.done{background:#0a2a0a!important;animation:none!important}.row.done .row-check{border-color:#2a5a2a;background:#1a4a1a;color:#4a4}.row.done .row-label{color:#4a4}.row.done .row-value{color:#6c6}@keyframes blink{0%,100%{background:#111}50%{background:#3a2500}}.row.alert{animation:blink .7s ease-in-out infinite}.row.alert .row-label{color:#fa0!important}.row.alert .row-value{color:#fc0!important}.btn-done{margin:8px;padding:10px;background:#222;border:1px solid #333;color:#666;font-size:12px;font-weight:600;cursor:pointer;text-transform:uppercase;flex-shrink:0}.btn-done:hover{background:#333;color:#fff}.no-data{grid-column:1/-1;display:flex;align-items:center;justify-content:center;color:#333;font-size:28px}.row-option{background:#1a1a0a;border-left:3px solid #aa0}.row-option .row-label{color:#aa0}.row-option .row-value{color:#cc0;font-size:13px;font-weight:500}.row-option.done{background:#0a2a0a;border-left-color:#2a5a2a}.row-option.done .row-label{color:#4a4}.row-option.done .row-value{color:#6c6}
+        *{margin:0;padding:0;box-sizing:border-box}html,body{height:100%;overflow:hidden}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#000;color:#fff;height:100vh;padding:15px 20px;display:flex;flex-direction:column}.header{display:flex;justify-content:space-between;align-items:center;padding:8px 0 15px;border-bottom:1px solid #222;margin-bottom:15px;flex-shrink:0}.clock{font-size:48px;font-weight:700;font-variant-numeric:tabular-nums}.info{font-size:18px;color:#555}.parc-name{font-size:14px;color:#444;text-transform:uppercase}.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:10px;flex:1;min-height:0}.card{background:#111;border:1px solid #222;display:flex;flex-direction:column;overflow:hidden}.card-header{background:#1a1a1a;padding:12px 10px;border-bottom:1px solid #222;flex-shrink:0}.card-time{font-size:42px;font-weight:800;line-height:1;margin-bottom:6px}.card-name{font-size:14px;font-weight:600;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card-info{font-size:12px;color:#666;margin-top:2px}.card-formule{font-size:10px;color:#444;text-transform:uppercase;margin-top:3px}.card-body{flex:1;overflow-y:auto;display:flex;flex-direction:column}.row{display:flex;align-items:center;justify-content:space-between;padding:10px 10px;border-bottom:1px solid #1a1a1a;cursor:pointer;transition:background .15s;flex-shrink:0}.row:hover{background:#1a1a1a}.row-label{font-size:12px;font-weight:600;color:#888;text-transform:uppercase}.row-value{font-size:16px;font-weight:700}.row-check{width:20px;height:20px;border:2px solid #333;font-size:12px;display:flex;align-items:center;justify-content:center;color:transparent;flex-shrink:0;margin-left:8px}
+        
+        /* État DONE = vert */
+        .row.done{background:#0a2a0a!important;animation:none!important}.row.done .row-check{border-color:#2a5a2a;background:#1a4a1a;color:#4a4}.row.done .row-label{color:#4a4}.row.done .row-value{color:#6c6}
+        
+        /* État ORANGE = en cours */
+        .row.orange{background:#2a1a00!important;animation:none!important}.row.orange .row-check{border-color:#5a4a2a;background:#3a2a0a;color:#fa0}.row.orange .row-label{color:#fa0}.row.orange .row-value{color:#fc0}
+        
+        /* Clignotement alerte */
+        @keyframes blink{0%,100%{background:#111}50%{background:#3a2500}}.row.alert{animation:blink .7s ease-in-out infinite}.row.alert .row-label{color:#fa0!important}.row.alert .row-value{color:#fc0!important}
+        
+        .btn-done{margin:8px;padding:10px;background:#222;border:1px solid #333;color:#666;font-size:12px;font-weight:600;cursor:pointer;text-transform:uppercase;flex-shrink:0}.btn-done:hover{background:#333;color:#fff}.no-data{grid-column:1/-1;display:flex;align-items:center;justify-content:center;color:#333;font-size:28px}.row-option{background:#1a1a0a;border-left:3px solid #aa0}.row-option .row-label{color:#aa0}.row-option .row-value{color:#cc0;font-size:13px;font-weight:500}.row-option.done{background:#0a2a0a;border-left-color:#2a5a2a}.row-option.done .row-label{color:#4a4}.row-option.done .row-value{color:#6c6}
     </style>
 </head>
 <body>
@@ -37,6 +48,13 @@
         
         function timeToMinutes(time){const[h,m]=time.split(':').map(Number);return h*60+m}
         
+        function isTimeReached(heure){
+            const now=new Date();
+            const currentMin=now.getHours()*60+now.getMinutes();
+            const heureMin=timeToMinutes(heure);
+            return currentMin>=heureMin;
+        }
+        
         function isAlertActive(heureRepas,offsetMinutes,isValidated){
             if(isValidated)return false;
             const now=new Date();
@@ -62,8 +80,25 @@
                 const pizzaSupAlert=isAlertActive(r.heureRepas,0,v.pizzasSup);
                 const gateauAlert=isAlertActive(r.heureRepas,0,v.gateau);
                 
+                // État arrivé: null, 'orange', 'done'
+                const arriveState = v.arrive || null;
+                const arriveTimeReached = isTimeReached(r.heureDebut);
+                
                 let rows='';
                 
+                // Ligne ARRIVÉ (visible seulement si l'heure de début est atteinte)
+                if(arriveTimeReached || arriveState){
+                    const arriveClass = arriveState === 'done' ? 'done' : (arriveState === 'orange' ? 'orange' : '');
+                    rows+=`<div class="row ${arriveClass}" onclick="toggleArrive('${r.id}')">
+                        <div>
+                            <div class="row-label">ARRIVÉ</div>
+                            <div class="row-value">${r.heureDebut}</div>
+                        </div>
+                        <div class="row-check">${arriveState ? '✓' : ''}</div>
+                    </div>`;
+                }
+                
+                // Chips/Bonbons + Boissons
                 rows+=`<div class="row ${v.snackBoissons?'done':''} ${snackBoissonsAlert?'alert':''}" onclick="toggleValidation('${r.id}','snackBoissons')">
                     <div>
                         <div class="row-label">${snackLabel} + BOISSONS</div>
@@ -121,6 +156,25 @@
                 </div>
                 <div class="row-check">${isDone?'✓':''}</div>
             </div>`;
+        }
+        
+        // Toggle spécial pour ARRIVÉ (3 états: null → orange → done)
+        async function toggleArrive(resId){
+            const current = validations[resId]?.arrive || null;
+            let newValue;
+            if(current === null) newValue = 'orange';
+            else if(current === 'orange') newValue = 'done';
+            else newValue = null; // Si done, on remet à null
+            
+            if(newValue === null){
+                await fetch(`/${PARC}/api/unvalidate`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reservationId:resId,type:'arrive'})});
+                if(validations[resId]) delete validations[resId].arrive;
+            } else {
+                await fetch(`/${PARC}/api/validate`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reservationId:resId,type:'arrive',value:newValue})});
+                if(!validations[resId]) validations[resId]={};
+                validations[resId].arrive = newValue;
+            }
+            render();
         }
         
         async function toggleValidation(resId,type){
