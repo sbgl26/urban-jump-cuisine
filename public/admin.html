@@ -5,149 +5,249 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Urban Jump</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0a;color:#fff;min-height:100vh;padding:25px}.container{max-width:1600px;margin:0 auto}.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;padding-bottom:20px;border-bottom:1px solid #222}.header h1{font-size:24px;font-weight:600;color:#888}.parc-badge{background:#222;color:#fff;padding:8px 16px;font-size:14px;text-transform:uppercase;margin-left:15px}.header-actions{display:flex;gap:15px}.btn{background:#222;color:#888;border:1px solid #333;padding:12px 24px;font-size:14px;cursor:pointer;transition:all .2s;text-decoration:none}.btn:hover{background:#333;color:#fff}.upload-section{background:#111;border:1px solid #222;padding:35px;margin-bottom:30px}.upload-zone{border:2px dashed #333;padding:50px;text-align:center;cursor:pointer;transition:all .2s}.upload-zone:hover,.upload-zone.dragover{border-color:#555;background:#1a1a1a}.upload-text{color:#555;margin-bottom:20px;font-size:16px}.upload-status{margin-top:20px;font-size:15px;color:#666}.upload-status.success{color:#4a4}.upload-status.error{color:#a44}#fileInput{display:none}.reservations-section{background:#111;border:1px solid #222}.section-header{padding:20px 25px;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center}.section-title{font-size:16px;font-weight:600;color:#888}.reservations-list{max-height:70vh;overflow-y:auto}.res-card{border-bottom:1px solid #1a1a1a;padding:20px 25px;display:grid;grid-template-columns:100px 220px 1fr auto;gap:25px;align-items:start}.res-card:hover{background:#151515}.res-card.done{opacity:.4}.res-time{font-size:32px;font-weight:700}.res-info{line-height:1.5}.res-name{font-weight:600;font-size:18px;margin-bottom:4px}.res-details{font-size:14px;color:#666}.res-formule{font-size:12px;color:#555;text-transform:uppercase;margin-top:4px}.res-controls{display:flex;flex-direction:column;gap:12px}.controls-row{display:flex;gap:20px;flex-wrap:wrap;align-items:center}.control-group{display:flex;align-items:center;gap:10px}.control-label{font-size:12px;color:#555;text-transform:uppercase;min-width:60px}.control-input{background:#1a1a1a;border:1px solid #333;color:#fff;padding:8px 12px;font-size:15px;width:70px;text-align:center}.control-input:focus{outline:none;border-color:#555}.control-btn{background:#222;border:1px solid #333;color:#666;width:32px;height:32px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}.control-btn:hover{background:#333;color:#fff}.res-actions{display:flex;flex-direction:column;gap:10px}.btn-small{padding:10px 16px;font-size:12px}.options-row{display:flex;gap:12px;flex-wrap:wrap}.option-badge{background:#1a1a1a;border:1px solid #333;padding:6px 14px;font-size:13px;color:#666;cursor:pointer;transition:all .2s}.option-badge:hover{border-color:#555}.option-badge.active{background:#1a3a1a;color:#4a4;border-color:#2a5a2a}.option-texte-input{background:#1a1a1a;border:1px solid #333;color:#fff;padding:8px 12px;font-size:14px;flex:1;min-width:200px}.option-texte-input:focus{outline:none;border-color:#aa0}.option-texte-input::placeholder{color:#444}.no-reservations{padding:80px 25px;text-align:center;color:#333;font-size:18px}@media(max-width:1200px){.res-card{grid-template-columns:1fr;gap:15px}.res-time{font-size:28px}}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#111;color:#fff;padding:20px;min-height:100vh}
+        .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;padding-bottom:20px;border-bottom:1px solid #333}
+        h1{font-size:24px;font-weight:600}
+        .header-right{display:flex;align-items:center;gap:15px}
+        .parc-badge{background:#333;padding:6px 12px;border-radius:4px;font-size:14px;color:#888}
+        .link{color:#666;text-decoration:none;font-size:14px}.link:hover{color:#fff}
+        .upload-zone{background:#1a1a1a;border:2px dashed #333;border-radius:8px;padding:40px;text-align:center;margin-bottom:30px;cursor:pointer;transition:all .2s}
+        .upload-zone:hover{border-color:#555;background:#222}
+        .upload-zone input{display:none}
+        .upload-zone p{color:#666;margin-top:10px}
+        .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:20px}
+        .card{background:#1a1a1a;border:1px solid #282828;border-radius:8px;overflow:hidden}
+        .card-header{background:#222;padding:15px;border-bottom:1px solid #333;display:flex;justify-content:space-between;align-items:flex-start}
+        .card-title{font-weight:600;font-size:16px}
+        .card-subtitle{color:#666;font-size:13px;margin-top:4px}
+        .card-time{font-size:24px;font-weight:700;color:#fff}
+        .card-body{padding:15px}
+        .field{margin-bottom:12px}
+        .field-label{font-size:11px;color:#666;text-transform:uppercase;margin-bottom:4px}
+        .field-value{font-size:14px;color:#ccc}
+        .field-row{display:flex;gap:10px;align-items:center}
+        .field-input{background:#222;border:1px solid #333;color:#fff;padding:8px 12px;border-radius:4px;width:80px;font-size:14px}
+        .field-input:focus{outline:none;border-color:#555}
+        .btn{padding:8px 16px;border:none;border-radius:4px;cursor:pointer;font-size:13px;font-weight:500;transition:all .2s}
+        .btn-primary{background:#2a4a8a;color:#fff}.btn-primary:hover{background:#3a5a9a}
+        .btn-danger{background:#4a2a2a;color:#f88}.btn-danger:hover{background:#5a3a3a}
+        .btn-small{padding:5px 10px;font-size:12px}
+        .options{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+        .option-tag{background:#2a2a2a;padding:4px 10px;border-radius:4px;font-size:12px;color:#888;cursor:pointer;border:1px solid #333}
+        .option-tag.active{background:#2a4a3a;color:#8c8;border-color:#3a5a4a}
+        .option-tag:hover{border-color:#555}
+        .status-row{display:flex;gap:10px;margin-top:15px;padding-top:15px;border-top:1px solid #282828}
+        .status-btn{flex:1;padding:12px;border:1px solid #333;background:#222;color:#666;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;text-transform:uppercase;transition:all .2s;text-align:center}
+        .status-btn:hover{background:#2a2a2a;color:#888}
+        .status-btn.orange{background:#3a2a0a;border-color:#5a4a2a;color:#fa0}
+        .status-btn.done{background:#1a3a1a;border-color:#2a5a2a;color:#6c6}
+        .textarea{width:100%;background:#222;border:1px solid #333;color:#fff;padding:8px;border-radius:4px;font-size:13px;resize:vertical;min-height:60px}
+        .message{padding:15px;border-radius:6px;margin-bottom:20px;text-align:center}
+        .message.success{background:#1a3a1a;color:#8c8;border:1px solid #2a5a2a}
+        .message.error{background:#3a1a1a;color:#f88;border:1px solid #5a2a2a}
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div style="display:flex;align-items:center">
-                <h1>URBAN JUMP - ADMIN</h1>
-                <span class="parc-badge" id="parcBadge"></span>
-            </div>
-            <div class="header-actions">
-                <a href="#" class="btn" id="linkCuisine">Voir écran cuisine</a>
-                <button class="btn" onclick="resetAll()">Reset tout</button>
-            </div>
-        </div>
-        <div class="upload-section">
-            <div class="upload-zone" id="uploadZone">
-                <div class="upload-text">Glisser le PDF Qweekle ici ou cliquer</div>
-                <button class="btn" onclick="document.getElementById('fileInput').click()">Choisir fichier</button>
-                <input type="file" id="fileInput" accept=".pdf">
-            </div>
-            <div class="upload-status" id="uploadStatus"></div>
-        </div>
-        <div class="reservations-section">
-            <div class="section-header">
-                <div class="section-title">RÉSERVATIONS DU JOUR</div>
-                <div id="totalCount" style="color:#555;font-size:14px">0 anniversaires</div>
-            </div>
-            <div class="reservations-list" id="reservationsList">
-                <div class="no-reservations">Aucune réservation - Uploader un PDF</div>
-            </div>
+    <div class="header">
+        <h1>URBAN JUMP - ADMIN <span class="parc-badge" id="parcBadge"></span></h1>
+        <div class="header-right">
+            <a href="#" id="linkCuisine" class="link">← Écran cuisine</a>
         </div>
     </div>
+    
+    <div id="message"></div>
+    
+    <div class="upload-zone" id="uploadZone">
+        <h3>📄 Importer PDF Qweekle</h3>
+        <p>Cliquez ou glissez le fichier ici</p>
+        <input type="file" id="fileInput" accept=".pdf">
+    </div>
+    
+    <div class="grid" id="grid"></div>
+    
     <script>
         const PARC = window.location.pathname.split('/')[1] || 'default';
         document.getElementById('parcBadge').textContent = PARC.toUpperCase();
         document.getElementById('linkCuisine').href = `/${PARC}`;
         
-        let reservations=[];
-        const uploadZone=document.getElementById('uploadZone');
-        const fileInput=document.getElementById('fileInput');
-        const uploadStatus=document.getElementById('uploadStatus');
+        let reservations = [], validations = {};
         
-        uploadZone.addEventListener('dragover',e=>{e.preventDefault();uploadZone.classList.add('dragover')});
-        uploadZone.addEventListener('dragleave',()=>{uploadZone.classList.remove('dragover')});
-        uploadZone.addEventListener('drop',e=>{e.preventDefault();uploadZone.classList.remove('dragover');const file=e.dataTransfer.files[0];if(file&&file.type==='application/pdf')uploadFile(file)});
-        fileInput.addEventListener('change',e=>{const file=e.target.files[0];if(file)uploadFile(file)});
+        // Upload
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
         
-        async function uploadFile(file){
-            uploadStatus.textContent='Chargement...';
-            uploadStatus.className='upload-status';
-            const formData=new FormData();
-            formData.append('pdf',file);
-            try{
-                const res=await fetch(`/${PARC}/api/upload`,{method:'POST',body:formData});
-                const data=await res.json();
-                if(data.success){
-                    uploadStatus.textContent=`${data.count} anniversaires importés`;
-                    uploadStatus.className='upload-status success';
-                    loadData();
-                }else throw new Error(data.error);
-            }catch(err){
-                uploadStatus.textContent='Erreur: '+err.message;
-                uploadStatus.className='upload-status error';
+        uploadZone.addEventListener('click', () => fileInput.click());
+        uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.style.borderColor = '#888'; });
+        uploadZone.addEventListener('dragleave', () => uploadZone.style.borderColor = '#333');
+        uploadZone.addEventListener('drop', e => {
+            e.preventDefault();
+            uploadZone.style.borderColor = '#333';
+            if (e.dataTransfer.files[0]) uploadFile(e.dataTransfer.files[0]);
+        });
+        fileInput.addEventListener('change', e => { if (e.target.files[0]) uploadFile(e.target.files[0]); });
+        
+        async function uploadFile(file) {
+            const formData = new FormData();
+            formData.append('pdf', file);
+            try {
+                const res = await fetch(`/${PARC}/api/upload`, { method: 'POST', body: formData });
+                const data = await res.json();
+                showMessage(`${data.count} anniversaires importés`, 'success');
+                loadData();
+            } catch (err) {
+                showMessage('Erreur upload', 'error');
             }
         }
         
-        async function loadData(){
-            try{
-                const res=await fetch(`/${PARC}/api/reservations`);
-                const data=await res.json();
-                reservations=data.reservations||[];
-                render();
-            }catch(err){console.error(err)}
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            msg.innerHTML = `<div class="message ${type}">${text}</div>`;
+            setTimeout(() => msg.innerHTML = '', 4000);
         }
         
-        function render(){
-            const list=document.getElementById('reservationsList');
-            const active=reservations.filter(r=>!r.done);
-            const done=reservations.filter(r=>r.done);
-            document.getElementById('totalCount').textContent=`${active.length} en attente / ${done.length} terminés`;
-            if(reservations.length===0){
-                list.innerHTML='<div class="no-reservations">Aucune réservation</div>';
+        async function loadData() {
+            const res = await fetch(`/${PARC}/api/kitchen`);
+            const data = await res.json();
+            reservations = data.reservations || [];
+            validations = data.validations || {};
+            render();
+        }
+        
+        function render() {
+            const grid = document.getElementById('grid');
+            if (reservations.length === 0) {
+                grid.innerHTML = '<p style="color:#666;grid-column:1/-1;text-align:center;padding:40px">Aucun anniversaire</p>';
                 return;
             }
-            list.innerHTML=[...active,...done].map(r=>`<div class="res-card ${r.done?'done':''}" data-id="${r.id}">
-                <div class="res-time">${r.heureRepas}</div>
-                <div class="res-info">
-                    <div class="res-name">${r.enfant}</div>
-                    <div class="res-details">${r.age} ans - Début ${r.heureDebut}</div>
-                    <div class="res-formule">${r.formule}</div>
-                </div>
-                <div class="res-controls">
-                    <div class="controls-row">
-                        <div class="control-group">
-                            <span class="control-label">Enfants</span>
-                            <button class="control-btn" onclick="updateField('${r.id}','nbEnfants',${r.nbEnfants-1})">-</button>
-                            <input type="number" class="control-input" value="${r.nbEnfants}" onchange="updateField('${r.id}','nbEnfants',this.value)">
-                            <button class="control-btn" onclick="updateField('${r.id}','nbEnfants',${r.nbEnfants+1})">+</button>
+            
+            grid.innerHTML = reservations.map(r => {
+                const v = validations[r.id] || {};
+                const arriveState = v.arrive || null;
+                const paiementDone = v.paiement || false;
+                
+                return `
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">${r.enfant}</div>
+                            <div class="card-subtitle">${r.client} - ${r.telephone}</div>
                         </div>
-                        <div class="control-group">
-                            <span class="control-label">Pizzas+</span>
-                            <button class="control-btn" onclick="updateField('${r.id}','pizzasExtra',${Math.max(0,(r.pizzasExtra||0)-1)})">-</button>
-                            <input type="number" class="control-input" value="${r.pizzasExtra||0}" onchange="updateField('${r.id}','pizzasExtra',this.value)">
-                            <button class="control-btn" onclick="updateField('${r.id}','pizzasExtra',${(r.pizzasExtra||0)+1})">+</button>
+                        <div class="card-time">${r.heureRepas}</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="field">
+                            <div class="field-label">Formule</div>
+                            <div class="field-value">${r.formule} • ${r.heureDebut} → ${r.heureRepas}</div>
+                        </div>
+                        <div class="field">
+                            <div class="field-label">Nombre d'enfants</div>
+                            <div class="field-row">
+                                <input type="number" class="field-input" value="${r.nbEnfants}" min="1" max="50" onchange="updateField('${r.id}','nbEnfants',this.value)">
+                                <span style="color:#666;font-size:12px">(${r.age} ans)</span>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="field-label">Pizzas supplémentaires</div>
+                            <input type="number" class="field-input" value="${r.pizzasExtra || 0}" min="0" max="20" onchange="updateField('${r.id}','pizzasExtra',this.value)">
+                        </div>
+                        <div class="field">
+                            <div class="field-label">Gâteau</div>
+                            <div class="field-value">${r.gateauType || 'Non spécifié'}</div>
+                        </div>
+                        <div class="field">
+                            <div class="field-label">Option texte libre</div>
+                            <textarea class="textarea" placeholder="Ex: Allergie gluten, demande spéciale..." onchange="updateField('${r.id}','optionTexte',this.value)">${r.optionTexte || ''}</textarea>
+                        </div>
+                        <div class="field">
+                            <div class="field-label">Options</div>
+                            <div class="options">
+                                <span class="option-tag ${r.reine?'active':''}" onclick="toggleOption('${r.id}','reine')">Reine</span>
+                                <span class="option-tag ${r.marguerite?'active':''}" onclick="toggleOption('${r.id}','marguerite')">Marguerite</span>
+                                <span class="option-tag ${r.champagne?'active':''}" onclick="toggleOption('${r.id}','champagne')">Champagne</span>
+                                <span class="option-tag ${r.pochettes?'active':''}" onclick="toggleOption('${r.id}','pochettes')">Pochettes</span>
+                            </div>
+                        </div>
+                        
+                        <div class="status-row">
+                            <div class="status-btn ${arriveState === 'orange' ? 'orange' : (arriveState === 'done' ? 'done' : '')}" onclick="toggleArrive('${r.id}')">
+                                ${arriveState === 'done' ? '✓ ' : ''}ARRIVÉE
+                            </div>
+                            <div class="status-btn ${paiementDone ? 'done' : ''}" onclick="togglePaiement('${r.id}')">
+                                ${paiementDone ? '✓ ' : ''}PAIEMENT
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top:15px;text-align:right">
+                            <button class="btn btn-danger btn-small" onclick="deleteReservation('${r.id}')">Supprimer</button>
                         </div>
                     </div>
-                    <div class="controls-row">
-                        <div class="options-row">
-                            <span class="option-badge ${r.reine>0?'active':''}" onclick="toggleOption('${r.id}','reine',${r.reine})">Reine ${r.reine>0?`(${r.reine})`:''}</span>
-                            <span class="option-badge ${r.marguerite>0?'active':''}" onclick="toggleOption('${r.id}','marguerite',${r.marguerite})">Marguerite ${r.marguerite>0?`(${r.marguerite})`:''}</span>
-                            <span class="option-badge ${r.champagne>0?'active':''}" onclick="toggleOption('${r.id}','champagne',${r.champagne})">Champagne ${r.champagne>0?`(${r.champagne})`:''}</span>
-                            <span class="option-badge ${r.pochettes>0?'active':''}" onclick="toggleOption('${r.id}','pochettes',${r.pochettes>0?0:r.nbEnfants})">Pochettes ${r.pochettes>0?`(${r.nbEnfants})`:''}</span>
-                        </div>
-                    </div>
-                    <div class="controls-row">
-                        <input type="text" class="option-texte-input" placeholder="Option libre (ex: pizza poulet-oignons)" value="${r.optionTexte||''}" onchange="updateField('${r.id}','optionTexte',this.value)">
-                    </div>
-                </div>
-                <div class="res-actions">
-                    ${!r.done?`<button class="btn btn-small" onclick="markDone('${r.id}')">Terminer</button>`:`<button class="btn btn-small" onclick="markUndone('${r.id}')">Réactiver</button>`}
-                </div>
-            </div>`).join('');
+                </div>`;
+            }).join('');
         }
         
-        async function updateField(id,field,value){
-            if(field!=='optionTexte'){value=parseInt(value)||0;if(field==='nbEnfants'&&value<1)value=1;if(field==='pizzasExtra'&&value<0)value=0}
-            await fetch(`/${PARC}/api/reservation/${id}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({[field]:value})});
+        async function updateField(id, field, value) {
+            await fetch(`/${PARC}/api/reservation/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ [field]: field === 'optionTexte' ? value : Number(value) })
+            });
             loadData();
         }
         
-        async function toggleOption(id,field,currentValue){
-            const newValue=currentValue>0?0:1;
-            await fetch(`/${PARC}/api/reservation/${id}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({[field]:newValue})});
+        async function toggleOption(id, option) {
+            const r = reservations.find(x => x.id === id);
+            const newValue = r[option] ? 0 : 1;
+            await fetch(`/${PARC}/api/reservation/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ [option]: newValue })
+            });
             loadData();
         }
         
-        async function markDone(id){await fetch(`/${PARC}/api/reservation/${id}/done`,{method:'POST'});loadData()}
-        async function markUndone(id){await fetch(`/${PARC}/api/reservation/${id}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({done:false})});loadData()}
-        async function resetAll(){if(confirm('Effacer toutes les données ?')){await fetch(`/${PARC}/api/reset`,{method:'POST'});loadData()}}
+        async function toggleArrive(resId) {
+            const current = validations[resId]?.arrive || null;
+            let newValue;
+            if (current === null) newValue = 'orange';
+            else if (current === 'orange') newValue = 'done';
+            else newValue = null;
+            
+            if (newValue === null) {
+                await fetch(`/${PARC}/api/unvalidate`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ reservationId: resId, type: 'arrive' })
+                });
+            } else {
+                await fetch(`/${PARC}/api/validate`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ reservationId: resId, type: 'arrive', value: newValue })
+                });
+            }
+            loadData();
+        }
         
+        async function togglePaiement(resId) {
+            const current = validations[resId]?.paiement;
+            const endpoint = current ? `/${PARC}/api/unvalidate` : `/${PARC}/api/validate`;
+            await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ reservationId: resId, type: 'paiement' })
+            });
+            loadData();
+        }
+        
+        async function deleteReservation(id) {
+            if (!confirm('Supprimer cet anniversaire ?')) return;
+            await fetch(`/${PARC}/api/reservation/${id}`, { method: 'DELETE' });
+            loadData();
+        }
+        
+        setInterval(loadData, 5000);
         loadData();
-        setInterval(loadData,5000);
     </script>
 </body>
 </html>
