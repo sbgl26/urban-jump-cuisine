@@ -91,11 +91,21 @@ function parseReservations(text) {
             const hasReine = /Reine/i.test(context);
             const hasMarguerite = /Marguerite/i.test(context);
             const hasChampagne = /Champagne/i.test(context);
+            const has1hSupp = /1h\s*Supp\s*anniv/i.test(context);
             const includesPizzas = (formula === 'Morning/Night' || formula === 'VIP');
+            
+            // Calcul heure repas avec 1h supp si option présente
+            let heureRepas = calculateMealTime(slot.start, formula);
+            if (has1hSupp) {
+                const [h, m] = heureRepas.split(':').map(Number);
+                const newH = h + 1;
+                heureRepas = `${String(newH).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+            }
+            
             reservations.push({
                 id: `res_${Date.now()}_${reservations.length}_${Math.random().toString(36).substr(2, 5)}`,
                 heureDebut: slot.start,
-                heureRepas: calculateMealTime(slot.start, formula),
+                heureRepas: heureRepas,
                 enfant: childName,
                 age: childAge,
                 nbEnfants: nbEnfants,
@@ -180,7 +190,7 @@ app.get('/:parc/api/kitchen', async (req, res) => {
     res.json({ reservations: active, validations: db.validations });
 });
 
-app.post('/:parc/api/reservation/:id', async (req, res) => {
+app.put('/:parc/api/reservation/:id', async (req, res) => {
     const parc = req.params.parc;
     const db = await loadDB(parc);
     const index = db.reservations.findIndex(r => r.id === req.params.id);
@@ -191,6 +201,14 @@ app.post('/:parc/api/reservation/:id', async (req, res) => {
     }
     await saveDB(parc, db);
     res.json({ success: true, reservation: db.reservations[index] });
+});
+
+app.delete('/:parc/api/reservation/:id', async (req, res) => {
+    const parc = req.params.parc;
+    const db = await loadDB(parc);
+    db.reservations = db.reservations.filter(r => r.id !== req.params.id);
+    await saveDB(parc, db);
+    res.json({ success: true });
 });
 
 app.post('/:parc/api/reservation/:id/done', async (req, res) => {
@@ -212,7 +230,6 @@ app.post('/:parc/api/validate', async (req, res) => {
     await saveDB(parc, db);
     res.json({ success: true });
 });
-
 
 app.post('/:parc/api/unvalidate', async (req, res) => {
     const parc = req.params.parc;
