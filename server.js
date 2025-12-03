@@ -186,7 +186,7 @@ app.get('/:parc/api/reservations', async (req, res) => {
 
 app.get('/:parc/api/kitchen', async (req, res) => {
     const db = await loadDB(req.params.parc);
-    const active = db.reservations.filter(r => !r.done).sort((a, b) => a.heureRepas.localeCompare(b.heureRepas)).slice(0, 10);
+    const active = db.reservations.filter(r => !r.done).sort((a, b) => a.heureRepas.localeCompare(b.heureRepas)).slice(0, 8);
     res.json({ reservations: active, validations: db.validations });
 });
 
