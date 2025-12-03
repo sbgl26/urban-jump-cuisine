@@ -80,13 +80,22 @@ function parseReservations(text) {
             else if (formuleType.includes('morning') || formuleType.includes('night')) formula = 'Morning/Night';
             let childName = childMatch ? `${childMatch[1]} ${childMatch[2]}` : 'Enfant';
             let childAge = childMatch ? parseInt(childMatch[3]) : 0;
-            const contextStart = Math.max(0, formuleMatch.index - 100);
-            const contextEnd = Math.min(slotContent.length, formuleMatch.index + 500);
+            
+            // Contexte élargi pour mieux capturer les options
+            const contextStart = Math.max(0, formuleMatch.index - 200);
+            const contextEnd = Math.min(slotContent.length, formuleMatch.index + 800);
             const context = slotContent.substring(contextStart, contextEnd);
+            
+            // Détection gâteau améliorée
             let gateauType = '';
-            if (/Moelleux.*chocolat/i.test(context)) gateauType = 'Moelleux Chocolat';
-            else if (/Bavarois.*Framboise/i.test(context)) gateauType = 'Bavarois Framboise';
-            else if (/Tarte.*pommes/i.test(context)) gateauType = 'Tarte Pommes';
+            if (/[Gg][aâ]teau[x]?\s+Moelleux|Moelleux\s*(au|aux)?\s*[Cc]hocolat/i.test(context)) {
+                gateauType = 'Moelleux Chocolat';
+            } else if (/[Gg][aâ]teau[x]?\s+Bavarois|Bavarois\s*Framboise/i.test(context)) {
+                gateauType = 'Bavarois Framboise';
+            } else if (/[Gg][aâ]teau[x]?\s+Tarte|Tarte\s*(aux)?\s*[Pp]ommes/i.test(context)) {
+                gateauType = 'Tarte Pommes';
+            }
+            
             const hasPochettes = /Pochettes?\s*surprises?/i.test(context);
             const hasReine = /Reine/i.test(context);
             const hasMarguerite = /Marguerite/i.test(context);
