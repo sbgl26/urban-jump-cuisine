@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cuisine - Urban Jump</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}html,body{height:100%;overflow:hidden}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#000;color:#fff;height:100vh;padding:15px 20px;display:flex;flex-direction:column}.header{display:flex;justify-content:space-between;align-items:center;padding:8px 0 15px;border-bottom:1px solid #222;margin-bottom:15px;flex-shrink:0}.clock{font-size:48px;font-weight:700;font-variant-numeric:tabular-nums}.info{font-size:18px;color:#555}.parc-name{font-size:14px;color:#444;text-transform:uppercase}.grid{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;flex:1;min-height:0}.card{background:#111;border:2px solid #222;display:flex;flex-direction:column;overflow:hidden;transition:border-color .2s}
+        *{margin:0;padding:0;box-sizing:border-box}html,body{height:100%;overflow:hidden}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#000;color:#fff;height:100vh;padding:15px 20px;display:flex;flex-direction:column}.header{display:flex;justify-content:space-between;align-items:center;padding:8px 0 15px;border-bottom:1px solid #222;margin-bottom:15px;flex-shrink:0}.clock{font-size:48px;font-weight:700;font-variant-numeric:tabular-nums}.info{font-size:18px;color:#555}.parc-name{font-size:14px;color:#444;text-transform:uppercase}
         
-        /* Encadré vert quand table prête */
+        .grid{display:grid;grid-template-columns:repeat(8,1fr);gap:12px;flex:1;min-height:0;width:100%}
+        
+        .card{background:#111;border:2px solid #222;display:flex;flex-direction:column;overflow:hidden;transition:border-color .2s;min-width:0}
         .card.table-ready{border-color:#2a5a2a;box-shadow:0 0 15px rgba(42,90,42,0.3)}
         
         .card-header{background:#1a1a1a;padding:12px 10px;border-bottom:1px solid #222;flex-shrink:0}.card-time{font-size:42px;font-weight:800;line-height:1;margin-bottom:6px}.card-name{font-size:14px;font-weight:600;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card-info{font-size:12px;color:#666;margin-top:2px}.card-formule{font-size:10px;color:#444;text-transform:uppercase;margin-top:3px}.card-body{flex:1;overflow-y:auto;display:flex;flex-direction:column}.row{display:flex;align-items:center;justify-content:space-between;padding:10px 10px;border-bottom:1px solid #1a1a1a;cursor:pointer;transition:background .15s;flex-shrink:0}.row:hover{background:#1a1a1a}.row-label{font-size:12px;font-weight:600;color:#888;text-transform:uppercase}.row-value{font-size:16px;font-weight:700}.row-check{width:20px;height:20px;border:2px solid #333;font-size:12px;display:flex;align-items:center;justify-content:center;color:transparent;flex-shrink:0;margin-left:8px}
@@ -19,8 +21,6 @@
         .btn-done{margin:8px;padding:10px;background:#222;border:1px solid #333;color:#666;font-size:12px;font-weight:600;cursor:pointer;text-transform:uppercase;flex-shrink:0}.btn-done:hover{background:#333;color:#fff}.no-data{grid-column:1/-1;display:flex;align-items:center;justify-content:center;color:#333;font-size:28px}.row-option{background:#1a1a0a;border-left:3px solid #aa0}.row-option .row-label{color:#aa0}.row-option .row-value{color:#cc0;font-size:13px;font-weight:500}.row-option.done{background:#0a2a0a;border-left-color:#2a5a2a}.row-option.done .row-label{color:#4a4}.row-option.done .row-value{color:#6c6}
         
         .row-footer{background:#0a0a0a;border-top:1px solid #222}
-        
-        /* Style spécial pour TABLE PRÊTE */
         .row-table{background:#0a1a0a;border-left:3px solid #2a5a2a}.row-table .row-label{color:#4a8a4a}.row-table .row-value{color:#6c6}
         .row-table.done{background:#1a3a1a;border-left-color:#3a7a3a}.row-table.done .row-label{color:#6c6}.row-table.done .row-value{color:#8c8}
     </style>
@@ -92,7 +92,7 @@
                 
                 let rows='';
                 
-                // TABLE PRÊTE (toujours visible, en premier)
+                // TABLE PRÊTE
                 rows+=`<div class="row row-table ${tableReady?'done':''}" onclick="toggleValidation('${r.id}','tablePrete')">
                     <div>
                         <div class="row-label">TABLE PRÊTE</div>
