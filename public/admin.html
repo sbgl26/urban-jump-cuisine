@@ -107,9 +107,9 @@
         }
         
         async function loadData() {
-            const res = await fetch(`/${PARC}/api/kitchen`);
+            const res = await fetch(`/${PARC}/api/reservations`);
             const data = await res.json();
-            reservations = data.reservations || [];
+            reservations = (data.reservations || []).filter(r => !r.done);
             validations = data.validations || {};
             render();
         }
