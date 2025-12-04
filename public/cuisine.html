@@ -7,7 +7,37 @@
     <style>
         *{margin:0;padding:0;box-sizing:border-box}html,body{height:100%;overflow:hidden}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#000;color:#fff;height:100vh;padding:15px 20px;display:flex;flex-direction:column}.header{display:flex;justify-content:space-between;align-items:center;padding:8px 0 15px;border-bottom:1px solid #222;margin-bottom:15px;flex-shrink:0}.clock{font-size:48px;font-weight:700;font-variant-numeric:tabular-nums}.info{font-size:18px;color:#555}.parc-name{font-size:14px;color:#444;text-transform:uppercase}
         
+        /* Desktop: 8 colonnes fixes */
         .grid{display:grid;grid-template-columns:repeat(8,1fr);gap:12px;flex:1;min-height:0;width:100%}
+        
+        /* Tablette: 4 colonnes avec scroll horizontal */
+        @media (max-width: 1200px) {
+            .grid{
+                display:flex;
+                overflow-x:auto;
+                scroll-snap-type:x mandatory;
+                -webkit-overflow-scrolling:touch;
+                gap:12px;
+                padding-bottom:10px;
+            }
+            .grid::-webkit-scrollbar{height:6px}
+            .grid::-webkit-scrollbar-track{background:#111}
+            .grid::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
+            .card{
+                flex:0 0 calc(25% - 9px);
+                min-width:calc(25% - 9px);
+                scroll-snap-align:start;
+            }
+        }
+        
+        /* Mobile: 2 colonnes */
+        @media (max-width: 768px) {
+            .card{
+                flex:0 0 calc(50% - 6px);
+                min-width:calc(50% - 6px);
+            }
+            .clock{font-size:32px}
+        }
         
         .card{background:#111;border:2px solid #222;display:flex;flex-direction:column;overflow:hidden;transition:border-color .2s;min-width:0}
         .card.table-ready{border-color:#2a5a2a;box-shadow:0 0 15px rgba(42,90,42,0.3)}
@@ -33,7 +63,7 @@
         </div>
         <div class="info"><span id="count">0</span> anniversaires en attente</div>
     </div>
-    <div class="grid" id="grid"><div class="no-data">Aucune donnée</div></div>
+    <div class="grid" id="grid"><div class="no-data">Aucune donnee</div></div>
     <script>
         const PARC = window.location.pathname.split('/')[1] || 'default';
         document.getElementById('parcName').textContent = PARC.toUpperCase();
@@ -92,24 +122,24 @@
                 
                 let rows='';
                 
-                // TABLE PRÊTE
+                // TABLE PRETE
                 rows+=`<div class="row row-table ${tableReady?'done':''}" onclick="toggleValidation('${r.id}','tablePrete')">
                     <div>
-                        <div class="row-label">TABLE PRÊTE</div>
-                        <div class="row-value">🪑</div>
+                        <div class="row-label">TABLE PRETE</div>
+                        <div class="row-value">-</div>
                     </div>
-                    <div class="row-check">${tableReady?'✓':''}</div>
+                    <div class="row-check">${tableReady?'V':''}</div>
                 </div>`;
                 
-                // ARRIVÉ
+                // ARRIVE
                 if(arriveTimeReached || arriveState){
                     const arriveClass = arriveState === 'done' ? 'done' : (arriveState === 'orange' ? 'orange' : '');
                     rows+=`<div class="row ${arriveClass}" onclick="toggleArrive('${r.id}')">
                         <div>
-                            <div class="row-label">ARRIVÉ</div>
+                            <div class="row-label">ARRIVE</div>
                             <div class="row-value">${r.heureDebut}</div>
                         </div>
-                        <div class="row-check">${arriveState ? '✓' : ''}</div>
+                        <div class="row-check">${arriveState ? 'V' : ''}</div>
                     </div>`;
                 }
                 
@@ -119,7 +149,7 @@
                         <div class="row-label">${snackLabel} + BOISSONS</div>
                         <div class="row-value">${r.chips} bols / ${r.boissons} bout.</div>
                     </div>
-                    <div class="row-check">${v.snackBoissons?'✓':''}</div>
+                    <div class="row-check">${v.snackBoissons?'V':''}</div>
                 </div>`;
                 
                 const pizzasBase = (r.formule==='Morning/Night'||r.formule==='VIP') ? r.pizzas - (r.pizzasExtra||0) : 0;
@@ -146,7 +176,7 @@
                             <div class="row-label">OPTION</div>
                             <div class="row-value">${r.optionTexte}</div>
                         </div>
-                        <div class="row-check">${v.optionTexte?'✓':''}</div>
+                        <div class="row-check">${v.optionTexte?'V':''}</div>
                     </div>`;
                 }
                 
@@ -154,18 +184,18 @@
                 rows+=`<div class="row row-footer ${v.paiement?'done':''}" onclick="toggleValidation('${r.id}','paiement')">
                     <div>
                         <div class="row-label">PAIEMENT</div>
-                        <div class="row-value">€</div>
+                        <div class="row-value">-</div>
                     </div>
-                    <div class="row-check">${v.paiement?'✓':''}</div>
+                    <div class="row-check">${v.paiement?'V':''}</div>
                 </div>`;
                 
-                // MÉNAGE
+                // MENAGE
                 rows+=`<div class="row row-footer ${v.menage?'done':''}" onclick="toggleValidation('${r.id}','menage')">
                     <div>
-                        <div class="row-label">MÉNAGE</div>
-                        <div class="row-value">🧹</div>
+                        <div class="row-label">MENAGE</div>
+                        <div class="row-value">-</div>
                     </div>
-                    <div class="row-check">${v.menage?'✓':''}</div>
+                    <div class="row-check">${v.menage?'V':''}</div>
                 </div>`;
                 
                 return`<div class="card ${tableReady?'table-ready':''}" data-id="${r.id}">
@@ -187,7 +217,7 @@
                     <div class="row-label">${label}</div>
                     <div class="row-value">${value}</div>
                 </div>
-                <div class="row-check">${isDone?'✓':''}</div>
+                <div class="row-check">${isDone?'V':''}</div>
             </div>`;
         }
         
