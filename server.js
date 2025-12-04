@@ -68,22 +68,35 @@ function parseReservations(text) {
         const slotContent = text.substring(slot.index, nextSlotIndex);
         if (!/Jump\s*Anniv|Formule/i.test(slotContent)) continue;
         const formuleMatches = [...slotContent.matchAll(/(\d{1,2})\.00\s*Formule\s*(Anniversaire\s*VIP|Morning|Night|Classique)/gi)];
-        const childMatches = [...slotContent.matchAll(/([A-Za-zÀ-ÿ\-]+)\s+([A-Za-zÀ-ÿ\-]+)\s*\([MF]\)[^)]*?(\d{1,2})\s*ans/gi)];
-        for (let j = 0; j < Math.max(formuleMatches.length, childMatches.length); j++) {
+        const childMatches = [...slotContent.matchAll(/([A-Za-zÀ-ÿ\-]+)\s+([A-Za-zÀ-ÿ\-]+)\s*\([MF]\)[^)]*?(\d{1,2})\s*ans\s*(\d{1,2})?\s*mois/gi)];
+        
+        // Fallback sans mois
+        const childMatchesSimple = [...slotContent.matchAll(/([A-Za-zÀ-ÿ\-]+)\s+([A-Za-zÀ-ÿ\-]+)\s*\([MF]\)[^)]*?(\d{1,2})\s*ans/gi)];
+        
+        for (let j = 0; j < Math.max(formuleMatches.length, childMatches.length, childMatchesSimple.length); j++) {
             const formuleMatch = formuleMatches[j];
-            const childMatch = childMatches[j];
+            const childMatch = childMatches[j] || childMatchesSimple[j];
             if (!formuleMatch) continue;
             const nbEnfants = parseInt(formuleMatch[1]) || 10;
             let formuleType = formuleMatch[2].toLowerCase();
             let formula = 'Classique';
             if (formuleType.includes('vip')) formula = 'VIP';
             else if (formuleType.includes('morning') || formuleType.includes('night')) formula = 'Morning/Night';
+            
             let childName = childMatch ? `${childMatch[1]} ${childMatch[2]}` : 'Enfant';
             let childAge = childMatch ? parseInt(childMatch[3]) : 0;
             
-            // Contexte élargi pour mieux capturer les options
-            const contextStart = Math.max(0, formuleMatch.index - 200);
-            const contextEnd = Math.min(slotContent.length, formuleMatch.index + 800);
+            // Arrondir l'âge selon les mois (>= 6 mois = +1 an)
+            if (childMatch && childMatch[4]) {
+                const mois = parseInt(childMatch[4]) || 0;
+                if (mois >= 6) {
+                    childAge += 1;
+                }
+            }
+            
+            // Contexte pour les options - UNIQUEMENT après la formule
+            const contextStart = formuleMatch.index;
+            const contextEnd = Math.min(slotContent.length, formuleMatch.index + 600);
             const context = slotContent.substring(contextStart, contextEnd);
             
             // Détection gâteau améliorée
@@ -97,13 +110,14 @@ function parseReservations(text) {
             }
             
             const hasPochettes = /Pochettes?\s*surprises?/i.test(context);
-            const hasReine = /Reine/i.test(context);
-            const hasMarguerite = /Marguerite/i.test(context);
-            const hasChampagne = /Champagne/i.test(context);
-            const has1hSupp = /1h\s*Supp\s*anniv/i.test(context);
+            const hasReine = /\*\s*Reine/i.test(context);
+            const hasMarguerite = /\*\s*Marguerite/i.test(context);
+            const hasChampagne = /\*\s*Champagne/i.test(context);
+            // Plus strict pour 1h Supp - doit être dans les options de CETTE réservation
+            const has1hSupp = /\d+\.00\s*\*\s*1h\s*Supp\s*anniv/i.test(context);
             const includesPizzas = (formula === 'Morning/Night' || formula === 'VIP');
             
-            // Calcul heure repas avec 1h supp si option présente
+            // Calcul heure repas
             let heureRepas = calculateMealTime(slot.start, formula);
             if (has1hSupp) {
                 const [h, m] = heureRepas.split(':').map(Number);
