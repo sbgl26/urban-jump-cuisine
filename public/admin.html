@@ -16,7 +16,7 @@
         .upload-zone:hover{border-color:#555;background:#222}
         .upload-zone input{display:none}
         .upload-zone p{color:#666;margin-top:10px}
-        .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:20px}
+        .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:20px}
         .card{background:#1a1a1a;border:1px solid #282828;border-radius:8px;overflow:hidden}
         .card-header{background:#222;padding:15px;border-bottom:1px solid #333;display:flex;justify-content:space-between;align-items:flex-start}
         .card-title{font-weight:600;font-size:16px}
@@ -28,7 +28,9 @@
         .field-value{font-size:14px;color:#ccc}
         .field-row{display:flex;gap:10px;align-items:center}
         .field-input{background:#222;border:1px solid #333;color:#fff;padding:8px 12px;border-radius:4px;width:80px;font-size:14px}
+        .field-input.wide{width:150px}
         .field-input:focus{outline:none;border-color:#555}
+        .field-select{background:#222;border:1px solid #333;color:#fff;padding:8px 12px;border-radius:4px;font-size:14px}
         .btn{padding:8px 16px;border:none;border-radius:4px;cursor:pointer;font-size:13px;font-weight:500;transition:all .2s}
         .btn-primary{background:#2a4a8a;color:#fff}.btn-primary:hover{background:#3a5a9a}
         .btn-danger{background:#4a2a2a;color:#f88}.btn-danger:hover{background:#5a3a3a}
@@ -46,20 +48,21 @@
         .message{padding:15px;border-radius:6px;margin-bottom:20px;text-align:center}
         .message.success{background:#1a3a1a;color:#8c8;border:1px solid #2a5a2a}
         .message.error{background:#3a1a1a;color:#f88;border:1px solid #5a2a2a}
+        .info-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
     </style>
 </head>
 <body>
     <div class="header">
         <h1>URBAN JUMP - ADMIN <span class="parc-badge" id="parcBadge"></span></h1>
         <div class="header-right">
-            <a href="#" id="linkCuisine" class="link">← Écran cuisine</a>
+            <a href="#" id="linkCuisine" class="link">Ecran cuisine</a>
         </div>
     </div>
     
     <div id="message"></div>
     
     <div class="upload-zone" id="uploadZone">
-        <h3>📄 Importer PDF Qweekle</h3>
+        <h3>Importer PDF Qweekle</h3>
         <p>Cliquez ou glissez le fichier ici</p>
         <input type="file" id="fileInput" accept=".pdf">
     </div>
@@ -93,7 +96,7 @@
             try {
                 const res = await fetch(`/${PARC}/api/upload`, { method: 'POST', body: formData });
                 const data = await res.json();
-                showMessage(`${data.count} anniversaires importés`, 'success');
+                showMessage(`${data.count} anniversaires importes`, 'success');
                 loadData();
             } catch (err) {
                 showMessage('Erreur upload', 'error');
@@ -131,33 +134,61 @@
                     <div class="card-header">
                         <div>
                             <div class="card-title">${r.enfant}</div>
-                            <div class="card-subtitle">${r.client} - ${r.telephone}</div>
+                            <div class="card-subtitle">${r.formule} - ${r.heureDebut}</div>
                         </div>
                         <div class="card-time">${r.heureRepas}</div>
                     </div>
                     <div class="card-body">
-                        <div class="field">
-                            <div class="field-label">Formule</div>
-                            <div class="field-value">${r.formule} • ${r.heureDebut} → ${r.heureRepas}</div>
+                        <div class="info-row">
+                            <div class="field">
+                                <div class="field-label">Prenom enfant</div>
+                                <input type="text" class="field-input wide" value="${r.enfant}" onchange="updateField('${r.id}','enfant',this.value)">
+                            </div>
+                            <div class="field">
+                                <div class="field-label">Age</div>
+                                <input type="number" class="field-input" value="${r.age}" min="1" max="18" onchange="updateField('${r.id}','age',this.value)">
+                            </div>
                         </div>
-                        <div class="field">
-                            <div class="field-label">Nombre d'enfants</div>
-                            <div class="field-row">
+                        <div class="info-row">
+                            <div class="field">
+                                <div class="field-label">Nombre d'enfants</div>
                                 <input type="number" class="field-input" value="${r.nbEnfants}" min="1" max="50" onchange="updateField('${r.id}','nbEnfants',this.value)">
-                                <span style="color:#666;font-size:12px">(${r.age} ans)</span>
+                            </div>
+                            <div class="field">
+                                <div class="field-label">Formule</div>
+                                <select class="field-select" onchange="updateField('${r.id}','formule',this.value)">
+                                    <option value="Classique" ${r.formule==='Classique'?'selected':''}>Classique</option>
+                                    <option value="Morning/Night" ${r.formule==='Morning/Night'?'selected':''}>Morning/Night</option>
+                                    <option value="VIP" ${r.formule==='VIP'?'selected':''}>VIP</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="field">
+                                <div class="field-label">Heure debut</div>
+                                <input type="time" class="field-input wide" value="${r.heureDebut}" onchange="updateField('${r.id}','heureDebut',this.value)">
+                            </div>
+                            <div class="field">
+                                <div class="field-label">Heure repas</div>
+                                <input type="time" class="field-input wide" value="${r.heureRepas}" onchange="updateField('${r.id}','heureRepas',this.value)">
                             </div>
                         </div>
                         <div class="field">
-                            <div class="field-label">Pizzas supplémentaires</div>
+                            <div class="field-label">Pizzas supplementaires</div>
                             <input type="number" class="field-input" value="${r.pizzasExtra || 0}" min="0" max="20" onchange="updateField('${r.id}','pizzasExtra',this.value)">
                         </div>
                         <div class="field">
-                            <div class="field-label">Gâteau</div>
-                            <div class="field-value">${r.gateauType || 'Non spécifié'}</div>
+                            <div class="field-label">Gateau</div>
+                            <select class="field-select" onchange="updateField('${r.id}','gateauType',this.value)">
+                                <option value="" ${!r.gateauType?'selected':''}>Non specifie</option>
+                                <option value="Moelleux Chocolat" ${r.gateauType==='Moelleux Chocolat'?'selected':''}>Moelleux Chocolat</option>
+                                <option value="Bavarois Framboise" ${r.gateauType==='Bavarois Framboise'?'selected':''}>Bavarois Framboise</option>
+                                <option value="Tarte Pommes" ${r.gateauType==='Tarte Pommes'?'selected':''}>Tarte Pommes</option>
+                            </select>
                         </div>
                         <div class="field">
                             <div class="field-label">Option texte libre</div>
-                            <textarea class="textarea" placeholder="Ex: Pizza Supp., Champomy Supp. ..." onchange="updateField('${r.id}','optionTexte',this.value)">${r.optionTexte || ''}</textarea>
+                            <textarea class="textarea" placeholder="Ex: Allergie gluten, demande speciale..." onchange="updateField('${r.id}','optionTexte',this.value)">${r.optionTexte || ''}</textarea>
                         </div>
                         <div class="field">
                             <div class="field-label">Options</div>
@@ -171,10 +202,10 @@
                         
                         <div class="status-row">
                             <div class="status-btn ${arriveState === 'orange' ? 'orange' : (arriveState === 'done' ? 'done' : '')}" onclick="toggleArrive('${r.id}')">
-                                ${arriveState === 'done' ? '✓ ' : ''}ARRIVÉE
+                                ${arriveState === 'done' ? 'V ' : ''}ARRIVEE
                             </div>
                             <div class="status-btn ${paiementDone ? 'done' : ''}" onclick="togglePaiement('${r.id}')">
-                                ${paiementDone ? '✓ ' : ''}PAIEMENT
+                                ${paiementDone ? 'V ' : ''}PAIEMENT
                             </div>
                         </div>
                         
@@ -187,10 +218,16 @@
         }
         
         async function updateField(id, field, value) {
+            const payload = {};
+            if (field === 'nbEnfants' || field === 'pizzasExtra' || field === 'age') {
+                payload[field] = Number(value);
+            } else {
+                payload[field] = value;
+            }
             await fetch(`/${PARC}/api/reservation/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ [field]: field === 'optionTexte' ? value : Number(value) })
+                body: JSON.stringify(payload)
             });
             loadData();
         }
