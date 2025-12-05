@@ -84,6 +84,11 @@
         
         function timeToMinutes(time){const[h,m]=time.split(':').map(Number);return h*60+m}
         
+        function getTotalPizzasExtra(r){
+            const p = r.pizzasExtra || {};
+            return (p.marguerite||0) + (p.reine||0) + (p.troisFromages||0) + (p.burger||0) + (p.pouletOignon||0);
+        }
+        
         function isTimeReached(heure){
             const now=new Date();
             const currentMin=now.getHours()*60+now.getMinutes();
@@ -152,14 +157,18 @@
                     <div class="row-check">${v.snackBoissons?'V':''}</div>
                 </div>`;
                 
-                const pizzasBase = (r.formule==='Morning/Night'||r.formule==='VIP') ? r.pizzas - (r.pizzasExtra||0) : 0;
+                const pizzasBase = (r.formule==='Morning/Night'||r.formule==='VIP') ? r.pizzas - getTotalPizzasExtra(r) : 0;
                 if(pizzasBase>0){
                     rows+=createRow(r.id,'pizzas','PIZZAS',pizzasBase,v.pizzas,pizzaAlert);
                 }
                 
-                if(r.pizzasExtra>0){
-                    rows+=createRow(r.id,'pizzasSup','PIZZAS SUP.',r.pizzasExtra,v.pizzasSup,pizzaSupAlert);
-                }
+                // Pizzas supplémentaires par type
+                const pExtra = r.pizzasExtra || {};
+                if(pExtra.marguerite>0) rows+=createRow(r.id,'pizzaSupMarguerite','PIZZA SUP. MARGUERITE',pExtra.marguerite,v.pizzaSupMarguerite,pizzaSupAlert);
+                if(pExtra.reine>0) rows+=createRow(r.id,'pizzaSupReine','PIZZA SUP. REINE',pExtra.reine,v.pizzaSupReine,pizzaSupAlert);
+                if(pExtra.troisFromages>0) rows+=createRow(r.id,'pizzaSupTroisFromages','PIZZA SUP. 3 FROMAGES',pExtra.troisFromages,v.pizzaSupTroisFromages,pizzaSupAlert);
+                if(pExtra.burger>0) rows+=createRow(r.id,'pizzaSupBurger','PIZZA SUP. BURGER',pExtra.burger,v.pizzaSupBurger,pizzaSupAlert);
+                if(pExtra.pouletOignon>0) rows+=createRow(r.id,'pizzaSupPouletOignon','PIZZA SUP. POULET OIGNON',pExtra.pouletOignon,v.pizzaSupPouletOignon,pizzaSupAlert);
                 
                 if(r.gateauType){
                     rows+=createRow(r.id,'gateau','GATEAU',r.gateauType,v.gateau,gateauAlert);
@@ -168,6 +177,7 @@
                 if(r.reine>0)rows+=createRow(r.id,'reine','REINE',r.reine,v.reine,false);
                 if(r.marguerite>0)rows+=createRow(r.id,'marguerite','MARGUERITE',r.marguerite,v.marguerite,false);
                 if(r.champagne>0)rows+=createRow(r.id,'champagne','CHAMPAGNE',r.champagne,v.champagne,false);
+                if(r.tirsfoot>0)rows+=createRow(r.id,'tirsfoot','TIRS DE FOOT',r.tirsfoot,v.tirsfoot,false);
                 if(r.pochettes>0)rows+=createRow(r.id,'pochettes','POCHETTES',r.nbEnfants,v.pochettes,false);
                 
                 if(r.optionTexte){
