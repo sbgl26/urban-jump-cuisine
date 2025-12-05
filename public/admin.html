@@ -49,6 +49,14 @@
         .message.success{background:#1a3a1a;color:#8c8;border:1px solid #2a5a2a}
         .message.error{background:#3a1a1a;color:#f88;border:1px solid #5a2a2a}
         .info-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+        .pizza-selector{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+        .pizza-row{display:flex;align-items:center;justify-content:space-between;background:#222;padding:8px 12px;border-radius:4px;border:1px solid #333}
+        .pizza-name{font-size:13px;color:#ccc}
+        .pizza-controls{display:flex;align-items:center;gap:8px}
+        .pizza-btn{width:28px;height:28px;background:#333;border:1px solid #444;color:#fff;border-radius:4px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+        .pizza-btn:hover{background:#444}
+        .pizza-btn:active{background:#555}
+        .pizza-count{font-size:16px;font-weight:600;color:#fff;min-width:20px;text-align:center}
     </style>
 </head>
 <body>
@@ -75,6 +83,32 @@
         document.getElementById('linkCuisine').href = `/${PARC}`;
         
         let reservations = [], validations = {};
+        
+        function renderPizzaRow(r, key, label) {
+            const pizzasExtra = r.pizzasExtra || {};
+            const count = pizzasExtra[key] || 0;
+            return `<div class="pizza-row">
+                <span class="pizza-name">${label}</span>
+                <div class="pizza-controls">
+                    <button class="pizza-btn" onclick="updatePizzaExtra('${r.id}','${key}',-1)">-</button>
+                    <span class="pizza-count">${count}</span>
+                    <button class="pizza-btn" onclick="updatePizzaExtra('${r.id}','${key}',1)">+</button>
+                </div>
+            </div>`;
+        }
+        
+        async function updatePizzaExtra(id, type, delta) {
+            const r = reservations.find(x => x.id === id);
+            if (!r) return;
+            const pizzasExtra = r.pizzasExtra || { marguerite: 0, reine: 0, troisFromages: 0, burger: 0, pouletOignon: 0 };
+            pizzasExtra[type] = Math.max(0, (pizzasExtra[type] || 0) + delta);
+            await fetch(`/${PARC}/api/reservation/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ pizzasExtra })
+            });
+            loadData();
+        }
         
         // Upload
         const uploadZone = document.getElementById('uploadZone');
@@ -175,7 +209,13 @@
                         </div>
                         <div class="field">
                             <div class="field-label">Pizzas supplementaires</div>
-                            <input type="number" class="field-input" value="${r.pizzasExtra || 0}" min="0" max="20" onchange="updateField('${r.id}','pizzasExtra',this.value)">
+                            <div class="pizza-selector">
+                                ${renderPizzaRow(r, 'marguerite', 'Marguerite')}
+                                ${renderPizzaRow(r, 'reine', 'Reine')}
+                                ${renderPizzaRow(r, 'troisFromages', '3 Fromages')}
+                                ${renderPizzaRow(r, 'burger', 'Burger')}
+                                ${renderPizzaRow(r, 'pouletOignon', 'Poulet Oignon')}
+                            </div>
                         </div>
                         <div class="field">
                             <div class="field-label">Gateau</div>
@@ -197,6 +237,7 @@
                                 <span class="option-tag ${r.marguerite?'active':''}" onclick="toggleOption('${r.id}','marguerite')">Marguerite</span>
                                 <span class="option-tag ${r.champagne?'active':''}" onclick="toggleOption('${r.id}','champagne')">Champagne</span>
                                 <span class="option-tag ${r.pochettes?'active':''}" onclick="toggleOption('${r.id}','pochettes')">Pochettes</span>
+                                <span class="option-tag ${r.tirsfoot?'active':''}" onclick="toggleOption('${r.id}','tirsfoot')">Tirs de foot</span>
                             </div>
                         </div>
                         
