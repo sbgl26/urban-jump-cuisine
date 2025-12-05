@@ -7,35 +7,18 @@
     <style>
         *{margin:0;padding:0;box-sizing:border-box}html,body{height:100%;overflow:hidden}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#000;color:#fff;height:100vh;padding:15px 20px;display:flex;flex-direction:column}.header{display:flex;justify-content:space-between;align-items:center;padding:8px 0 15px;border-bottom:1px solid #222;margin-bottom:15px;flex-shrink:0}.clock{font-size:48px;font-weight:700;font-variant-numeric:tabular-nums}.info{font-size:18px;color:#555}.parc-name{font-size:14px;color:#444;text-transform:uppercase}
         
-        /* Desktop: 8 colonnes fixes */
         .grid{display:grid;grid-template-columns:repeat(8,1fr);gap:12px;flex:1;min-height:0;width:100%}
         
-        /* Tablette: 4 colonnes avec scroll horizontal */
         @media (max-width: 1200px) {
-            .grid{
-                display:flex;
-                overflow-x:auto;
-                scroll-snap-type:x mandatory;
-                -webkit-overflow-scrolling:touch;
-                gap:12px;
-                padding-bottom:10px;
-            }
+            .grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;gap:12px;padding-bottom:10px}
             .grid::-webkit-scrollbar{height:6px}
             .grid::-webkit-scrollbar-track{background:#111}
             .grid::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
-            .card{
-                flex:0 0 calc(25% - 9px);
-                min-width:calc(25% - 9px);
-                scroll-snap-align:start;
-            }
+            .card{flex:0 0 calc(25% - 9px);min-width:calc(25% - 9px);scroll-snap-align:start}
         }
         
-        /* Mobile: 2 colonnes */
         @media (max-width: 768px) {
-            .card{
-                flex:0 0 calc(50% - 6px);
-                min-width:calc(50% - 6px);
-            }
+            .card{flex:0 0 calc(50% - 6px);min-width:calc(50% - 6px)}
             .clock{font-size:32px}
         }
         
@@ -78,6 +61,7 @@
                 const data=await res.json();
                 reservations=data.reservations||[];
                 validations=data.validations||{};
+                console.log('Reservations:', reservations); // Debug
                 render();
             }catch(err){console.error(err)}
         }
@@ -157,29 +141,40 @@
                     <div class="row-check">${v.snackBoissons?'V':''}</div>
                 </div>`;
                 
-                const pizzasBase = (r.formule==='Morning/Night'||r.formule==='VIP') ? r.pizzas - getTotalPizzasExtra(r) : 0;
-                if(pizzasBase>0){
+                // PIZZAS DE BASE (Morning/Night et VIP)
+                const hasPizzaFormule = (r.formule==='Morning/Night'||r.formule==='VIP');
+                const totalPizzasExtra = getTotalPizzasExtra(r);
+                const pizzasBase = hasPizzaFormule ? (r.pizzas || 0) - totalPizzasExtra : 0;
+                
+                if(pizzasBase > 0){
                     rows+=createRow(r.id,'pizzas','PIZZAS',pizzasBase,v.pizzas,pizzaAlert);
                 }
                 
                 // Pizzas supplémentaires par type
                 const pExtra = r.pizzasExtra || {};
-                if(pExtra.marguerite>0) rows+=createRow(r.id,'pizzaSupMarguerite','PIZZA SUP. MARGUERITE',pExtra.marguerite,v.pizzaSupMarguerite,pizzaSupAlert);
-                if(pExtra.reine>0) rows+=createRow(r.id,'pizzaSupReine','PIZZA SUP. REINE',pExtra.reine,v.pizzaSupReine,pizzaSupAlert);
-                if(pExtra.troisFromages>0) rows+=createRow(r.id,'pizzaSupTroisFromages','PIZZA SUP. 3 FROMAGES',pExtra.troisFromages,v.pizzaSupTroisFromages,pizzaSupAlert);
-                if(pExtra.burger>0) rows+=createRow(r.id,'pizzaSupBurger','PIZZA SUP. BURGER',pExtra.burger,v.pizzaSupBurger,pizzaSupAlert);
-                if(pExtra.pouletOignon>0) rows+=createRow(r.id,'pizzaSupPouletOignon','PIZZA SUP. POULET OIGNON',pExtra.pouletOignon,v.pizzaSupPouletOignon,pizzaSupAlert);
+                if(pExtra.marguerite>0) rows+=createRow(r.id,'pizzaSupMarguerite','PIZZA MARGUERITE',pExtra.marguerite,v.pizzaSupMarguerite,pizzaSupAlert);
+                if(pExtra.reine>0) rows+=createRow(r.id,'pizzaSupReine','PIZZA REINE',pExtra.reine,v.pizzaSupReine,pizzaSupAlert);
+                if(pExtra.troisFromages>0) rows+=createRow(r.id,'pizzaSupTroisFromages','PIZZA 3 FROMAGES',pExtra.troisFromages,v.pizzaSupTroisFromages,pizzaSupAlert);
+                if(pExtra.burger>0) rows+=createRow(r.id,'pizzaSupBurger','PIZZA BURGER',pExtra.burger,v.pizzaSupBurger,pizzaSupAlert);
+                if(pExtra.pouletOignon>0) rows+=createRow(r.id,'pizzaSupPouletOignon','PIZZA POULET OIGNON',pExtra.pouletOignon,v.pizzaSupPouletOignon,pizzaSupAlert);
                 
+                // Gateau
                 if(r.gateauType){
                     rows+=createRow(r.id,'gateau','GATEAU',r.gateauType,v.gateau,gateauAlert);
                 }
                 
+                // Options supplémentaires
                 if(r.reine>0)rows+=createRow(r.id,'reine','REINE',r.reine,v.reine,false);
                 if(r.marguerite>0)rows+=createRow(r.id,'marguerite','MARGUERITE',r.marguerite,v.marguerite,false);
                 if(r.champagne>0)rows+=createRow(r.id,'champagne','CHAMPAGNE',r.champagne,v.champagne,false);
+                
+                // TIRS DE FOOT
                 if(r.tirsfoot>0)rows+=createRow(r.id,'tirsfoot','TIRS DE FOOT',r.tirsfoot,v.tirsfoot,false);
+                
+                // Pochettes
                 if(r.pochettes>0)rows+=createRow(r.id,'pochettes','POCHETTES',r.nbEnfants,v.pochettes,false);
                 
+                // Option texte libre
                 if(r.optionTexte){
                     rows+=`<div class="row row-option ${v.optionTexte?'done':''}" onclick="toggleValidation('${r.id}','optionTexte')">
                         <div>
