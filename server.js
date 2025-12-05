@@ -46,7 +46,6 @@ function calculateChips(nbEnfants) {
 function recalculateQuantities(reservation) {
     const includesPizzas = (reservation.formule === 'Morning/Night' || reservation.formule === 'VIP');
     reservation.pizzas = includesPizzas ? calculatePizzas(reservation.nbEnfants) : 0;
-    // Calculer le total des pizzas supplémentaires
     const pizzasExtra = reservation.pizzasExtra || {};
     const totalPizzasExtra = (pizzasExtra.marguerite || 0) + (pizzasExtra.reine || 0) + 
                             (pizzasExtra.troisFromages || 0) + (pizzasExtra.burger || 0) + 
@@ -74,8 +73,6 @@ function parseReservations(text) {
         if (!/Jump\s*Anniv|Formule/i.test(slotContent)) continue;
         const formuleMatches = [...slotContent.matchAll(/(\d{1,2})\.00\s*Formule\s*(Anniversaire\s*VIP|Morning|Night|Classique)/gi)];
         const childMatches = [...slotContent.matchAll(/([A-Za-zÀ-ÿ\-]+)\s+([A-Za-zÀ-ÿ\-]+)\s*\([MF]\)[^)]*?(\d{1,2})\s*ans\s*(\d{1,2})?\s*mois/gi)];
-        
-        // Fallback sans mois
         const childMatchesSimple = [...slotContent.matchAll(/([A-Za-zÀ-ÿ\-]+)\s+([A-Za-zÀ-ÿ\-]+)\s*\([MF]\)[^)]*?(\d{1,2})\s*ans/gi)];
         
         for (let j = 0; j < Math.max(formuleMatches.length, childMatches.length, childMatchesSimple.length); j++) {
@@ -91,7 +88,6 @@ function parseReservations(text) {
             let childName = childMatch ? `${childMatch[1]} ${childMatch[2]}` : 'Enfant';
             let childAge = childMatch ? parseInt(childMatch[3]) : 0;
             
-            // Arrondir l'âge selon les mois (>= 6 mois = +1 an)
             if (childMatch && childMatch[4]) {
                 const mois = parseInt(childMatch[4]) || 0;
                 if (mois >= 6) {
@@ -99,12 +95,10 @@ function parseReservations(text) {
                 }
             }
             
-            // Contexte pour les options - UNIQUEMENT après la formule
             const contextStart = formuleMatch.index;
             const contextEnd = Math.min(slotContent.length, formuleMatch.index + 600);
             const context = slotContent.substring(contextStart, contextEnd);
             
-            // Détection gâteau améliorée
             let gateauType = '';
             if (/[Gg][aâ]teau[x]?\s+Moelleux|Moelleux\s*(au|aux)?\s*[Cc]hocolat/i.test(context)) {
                 gateauType = 'Moelleux Chocolat';
@@ -119,11 +113,9 @@ function parseReservations(text) {
             const hasMarguerite = /\*\s*Marguerite/i.test(context);
             const hasChampagne = /\*\s*Champagne/i.test(context);
             const hasTirsFoot = /Tirs?\s*(de)?\s*foot|Foot\s*Goal|Tir\s*au\s*but/i.test(context);
-            // Plus strict pour 1h Supp - doit être dans les options de CETTE réservation
             const has1hSupp = /\d+\.00\s*\*\s*1h\s*Supp\s*anniv/i.test(context);
             const includesPizzas = (formula === 'Morning/Night' || formula === 'VIP');
             
-            // Calcul heure repas
             let heureRepas = calculateMealTime(slot.start, formula);
             if (has1hSupp) {
                 const [h, m] = heureRepas.split(':').map(Number);
@@ -167,7 +159,6 @@ function parseReservations(text) {
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-// Page d'accueil
 app.get('/', (req, res) => {
     res.send(`
         <html>
@@ -186,7 +177,6 @@ app.get('/', (req, res) => {
     `);
 });
 
-// Pages par parc
 app.get('/:parc', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'cuisine.html'));
 });
@@ -195,7 +185,6 @@ app.get('/:parc/admin', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
-// API par parc
 app.post('/:parc/api/upload', upload.single('pdf'), async (req, res) => {
     try {
         const parc = req.params.parc;
