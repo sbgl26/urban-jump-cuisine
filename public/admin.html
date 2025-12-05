@@ -232,21 +232,21 @@
                             </div>
                         </div>
                         <div class="field">
-                            <div class="field-label">Pizzas supplementaires</div>
-                            <div class="pizza-selector">
-                                ${renderPizzaRow(r, 'marguerite', 'Marguerite')}
-                                ${renderPizzaRow(r, 'reine', 'Reine')}
-                                ${renderPizzaRow(r, 'troisFromages', '3 Fromages')}
-                                ${renderPizzaRow(r, 'burger', 'Burger')}
-                                ${renderPizzaRow(r, 'pouletOignon', 'Poulet Oignon')}
-                            </div>
-                        </div>
-                        <div class="field">
-                            <div class="field-label">Tirs de foot</div>
-                            <div class="pizza-selector">
-                                ${renderCounterRow(r, 'tirsfoot', 'Tirs de foot')}
-                            </div>
-                        </div>
+    <div class="field-label">Pizzas supplementaires</div>
+    <div class="pizza-selector">
+        ${renderPizzaRow(r, 'marguerite', 'Marguerite')}
+        ${renderPizzaRow(r, 'reine', 'Reine')}
+        ${renderPizzaRow(r, 'troisFromages', '3 Fromages')}
+        ${renderPizzaRow(r, 'burger', 'Burger')}
+        ${renderPizzaRow(r, 'pouletOignon', 'Poulet Oignon')}
+    </div>
+</div>
+<div class="field">
+    <div class="field-label">Tirs de foot</div>
+    <div class="pizza-selector">
+        ${renderCounterRow(r, 'tirsfoot', 'Tirs de foot')}
+    </div>
+</div>
                         <div class="field">
                             <div class="field-label">Gateau</div>
                             <select class="field-select" onchange="updateField('${r.id}','gateauType',this.value)">
