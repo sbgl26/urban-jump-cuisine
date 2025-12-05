@@ -97,6 +97,30 @@
             </div>`;
         }
         
+        function renderCounterRow(r, key, label) {
+            const count = r[key] || 0;
+            return `<div class="pizza-row">
+                <span class="pizza-name">${label}</span>
+                <div class="pizza-controls">
+                    <button class="pizza-btn" onclick="updateCounter('${r.id}','${key}',-1)">-</button>
+                    <span class="pizza-count">${count}</span>
+                    <button class="pizza-btn" onclick="updateCounter('${r.id}','${key}',1)">+</button>
+                </div>
+            </div>`;
+        }
+        
+        async function updateCounter(id, field, delta) {
+            const r = reservations.find(x => x.id === id);
+            if (!r) return;
+            const newValue = Math.max(0, (r[field] || 0) + delta);
+            await fetch(`/${PARC}/api/reservation/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ [field]: newValue })
+            });
+            loadData();
+        }
+        
         async function updatePizzaExtra(id, type, delta) {
             const r = reservations.find(x => x.id === id);
             if (!r) return;
@@ -218,6 +242,12 @@
                             </div>
                         </div>
                         <div class="field">
+                            <div class="field-label">Tirs de foot</div>
+                            <div class="pizza-selector">
+                                ${renderCounterRow(r, 'tirsfoot', 'Tirs de foot')}
+                            </div>
+                        </div>
+                        <div class="field">
                             <div class="field-label">Gateau</div>
                             <select class="field-select" onchange="updateField('${r.id}','gateauType',this.value)">
                                 <option value="" ${!r.gateauType?'selected':''}>Non specifie</option>
@@ -237,7 +267,6 @@
                                 <span class="option-tag ${r.marguerite?'active':''}" onclick="toggleOption('${r.id}','marguerite')">Marguerite</span>
                                 <span class="option-tag ${r.champagne?'active':''}" onclick="toggleOption('${r.id}','champagne')">Champagne</span>
                                 <span class="option-tag ${r.pochettes?'active':''}" onclick="toggleOption('${r.id}','pochettes')">Pochettes</span>
-                                <span class="option-tag ${r.tirsfoot?'active':''}" onclick="toggleOption('${r.id}','tirsfoot')">Tirs de foot</span>
                             </div>
                         </div>
                         
