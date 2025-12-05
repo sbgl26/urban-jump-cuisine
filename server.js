@@ -46,7 +46,12 @@ function calculateChips(nbEnfants) {
 function recalculateQuantities(reservation) {
     const includesPizzas = (reservation.formule === 'Morning/Night' || reservation.formule === 'VIP');
     reservation.pizzas = includesPizzas ? calculatePizzas(reservation.nbEnfants) : 0;
-    reservation.pizzas += reservation.pizzasExtra || 0;
+    // Calculer le total des pizzas supplémentaires
+    const pizzasExtra = reservation.pizzasExtra || {};
+    const totalPizzasExtra = (pizzasExtra.marguerite || 0) + (pizzasExtra.reine || 0) + 
+                            (pizzasExtra.troisFromages || 0) + (pizzasExtra.burger || 0) + 
+                            (pizzasExtra.pouletOignon || 0);
+    reservation.pizzas += totalPizzasExtra;
     reservation.chips = calculateChips(reservation.nbEnfants);
     reservation.boissons = calculateChips(reservation.nbEnfants);
     if (reservation.pochettes > 0) reservation.pochettes = reservation.nbEnfants;
@@ -113,6 +118,7 @@ function parseReservations(text) {
             const hasReine = /\*\s*Reine/i.test(context);
             const hasMarguerite = /\*\s*Marguerite/i.test(context);
             const hasChampagne = /\*\s*Champagne/i.test(context);
+            const hasTirsFoot = /Tirs?\s*(de)?\s*foot|Foot\s*Goal|Tir\s*au\s*but/i.test(context);
             // Plus strict pour 1h Supp - doit être dans les options de CETTE réservation
             const has1hSupp = /\d+\.00\s*\*\s*1h\s*Supp\s*anniv/i.test(context);
             const includesPizzas = (formula === 'Morning/Night' || formula === 'VIP');
@@ -135,13 +141,14 @@ function parseReservations(text) {
                 formule: formula,
                 gateauType: gateauType,
                 pizzas: includesPizzas ? calculatePizzas(nbEnfants) : 0,
-                pizzasExtra: 0,
+                pizzasExtra: { marguerite: 0, reine: 0, troisFromages: 0, burger: 0, pouletOignon: 0 },
                 chips: calculateChips(nbEnfants),
                 boissons: calculateChips(nbEnfants),
                 pochettes: hasPochettes ? nbEnfants : 0,
                 reine: hasReine ? 1 : 0,
                 marguerite: hasMarguerite ? 1 : 0,
                 champagne: hasChampagne ? 1 : 0,
+                tirsfoot: hasTirsFoot ? 1 : 0,
                 optionTexte: '',
                 done: false
             });
@@ -219,7 +226,7 @@ app.put('/:parc/api/reservation/:id', async (req, res) => {
     const index = db.reservations.findIndex(r => r.id === req.params.id);
     if (index === -1) return res.status(404).json({ error: 'Non trouvé' });
     Object.assign(db.reservations[index], req.body);
-    if (req.body.nbEnfants !== undefined || req.body.pizzasExtra !== undefined) {
+    if (req.body.nbEnfants !== undefined || req.body.pizzasExtra !== undefined || req.body.formule !== undefined) {
         recalculateQuantities(db.reservations[index]);
     }
     await saveDB(parc, db);
